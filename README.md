@@ -20,7 +20,7 @@ Note: this is not the official NG2 CLI and does not create new Angular 2 project
 | Scaffold        | Usage|
 |:------------- |:-------|
 | [component](#component)      |` ngt g c [component-name]`|
-| service      | `ngt g c [service-name]`|
+| service      | `ngt g s [service-name]`|
 | pipe      | `ngt g p [pipe-name]`|
 | module      | `ngt g m [module-name]`|
 | index      | `ngt g i `|
