@@ -1,0 +1,7 @@
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({name: '$camelCaseName$'})
+
+export class $PascalCaseName$ implements PipeTransform {
+
+}

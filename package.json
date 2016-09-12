@@ -1,0 +1,13 @@
+{
+  "name": "angular-tools",
+  "version": "0.0.1",
+  "description": "A simple Angular CLI for Angular2",
+  "main": "index.js",
+  "scripts": {},
+  "bin": {
+    "ngt": "index.js"
+  },
+  "author": "Little Universe Studios",
+  "license": "ISC",
+  "dependencies": {}
+}
