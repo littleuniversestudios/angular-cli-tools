@@ -1,13 +1,21 @@
 {
-  "name": "angular-tools",
-  "version": "0.0.1",
-  "description": "A simple Angular CLI for Angular2",
+  "name": "angular-cli-tools",
+  "version": "1.0.0",
+  "description": "Command Line Interface tools for using with existing Angular 2 projects.",
   "main": "index.js",
-  "scripts": {},
   "bin": {
     "ngt": "index.js"
   },
-  "author": "Little Universe Studios",
-  "license": "ISC",
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/littleuniversestudios/angular-cli-tools.git"
+  },
+  "author": "Little Universe Studios <mark@littleuniversestudios.com> (http://littleuniversestudios.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/littleuniversestudios/angular-cli-tools/issues"
+  },
+  "homepage": "https://github.com/littleuniversestudios/angular-cli-tools#readme"
 }

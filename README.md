@@ -4,7 +4,7 @@ Note: this is not the official NG2 CLI and does not create new Angular 2 project
 
 ##Install 
 
-`npm install angular-cli-tools --save-dev`
+`npm install angular-cli-tools -g`
 
 
 ##Commands
