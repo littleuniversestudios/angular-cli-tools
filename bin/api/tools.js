@@ -1,4 +1,5 @@
 var fs = require('fs');
+var exec = require('child_process').exec;
 
 var tools = {
 
@@ -68,6 +69,17 @@ var tools = {
 
 	readdirSync : function (path) {
 		return fs.readdirSync(path)
+	},
+
+	runCommand : function (command) {
+		exec(command, function (error, stdout, stderr) {
+			if (error || stderr) {
+				tools.logError('Could not execute command.');
+				tools.logError(stderr);
+			} else if (stdout) {
+				console.log(stdout)
+			}
+		});
 	}
 };
 

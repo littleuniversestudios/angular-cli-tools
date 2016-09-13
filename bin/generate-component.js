@@ -37,6 +37,7 @@ try {
 						try {
 							tools.replaceInFile((paths.ts), replace.query, replace.result, (paths.ts), function () {
 								tools.replaceInFile((paths.html), replace.query, replace.result, (paths.html), function () {
+									tools.runCommand('cd ' + paths.directory + ' && ngt g i');
 									tools.logSuccess('Successfully created component \'' + name + '\'')
 									tools.logSuccess('Created: ./' + paths.ts);
 									tools.logSuccess('Created: ./' + paths.html);
