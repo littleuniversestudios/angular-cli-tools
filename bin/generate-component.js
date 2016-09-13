@@ -7,11 +7,12 @@ var name = component[1] ? component[1] : tools.throwError('You need to provide a
 var styleType = component[2] == '--css' ? 'css' : 'scss';
 
 var paths = {
-	directory : tools.prefix + name,
+	directory : name,
 	htmlBase : __dirname + '/base/component/html.txt',
 	scssBase : __dirname + '/base/component/'+ styleType +'.txt',
 	tsBase : __dirname + '/base/component/ts.txt'
 };
+
 paths.html = paths.directory + '/' + name + '.component.html';
 paths.scss = paths.directory + '/' + name + '.component.' + styleType;
 paths.ts = paths.directory + '/' + name + '.component.ts';
@@ -22,6 +23,7 @@ if (tools.fileExists(paths.directory)) {
 	tools.throwError('Directory ' + paths.directory + ' already exists!');
 }
 
+if (!name) tools.throwError('You need to provide a name!');
 
 try {
 	tools.makeDirSync(paths.directory);
@@ -38,8 +40,8 @@ try {
 						try {
 							tools.replaceInFile((paths.ts), replace.query, replace.result, (paths.ts), function () {
 								tools.replaceInFile((paths.html), replace.query, replace.result, (paths.html), function () {
-									tools.runCommand('cd ' + paths.directory + ' && ngt g i');
-									tools.logSuccess('Successfully created component \'' + name + '\'')
+									tools.updateIndex(paths.directory);
+									tools.logSuccess('Successfully created component \'' + name + '\'');
 									tools.logSuccess('Created: ./' + paths.ts);
 									tools.logSuccess('Created: ./' + paths.html);
 									tools.logSuccess('Created: ./' + paths.scss);

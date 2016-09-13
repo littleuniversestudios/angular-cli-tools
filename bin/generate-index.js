@@ -4,7 +4,7 @@ var shouldUpdate = process.argv.slice('2')[1] == '--update';
 
 var paths = {
 	baseTs : __dirname + '/base/index-ts.txt',
-	ts : tools.prefix + 'index.ts',
+	ts : 'index.ts',
 };
 
 var success = ['Created Index', 'Created ' + paths.ts];

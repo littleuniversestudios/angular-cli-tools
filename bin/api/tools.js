@@ -1,5 +1,9 @@
 var fs = require('fs');
 var exec = require('child_process').exec;
+var execSync = require('child_process').execSync;
+var windows = process.platform == 'win32';
+var logging = require('./logging');
+var helpers = require('./helpers');
 
 var tools = {
 
@@ -25,17 +29,9 @@ var tools = {
 		});
 	},
 
-	camelCase : function (str) {
-		var pascalCaseName = tools.pascalCase(str);
-		return pascalCaseName[0].toLowerCase() + pascalCaseName.slice(1);
-	},
+	camelCase : helpers.camelCase,
 
-	pascalCase : function (str) {
-		return str.split('-').map(function (word) {
-			return word.charAt(0).toUpperCase() + word.slice(1);
-		}).join('');
-
-	},
+	pascalCase : helpers.pascalCase,
 
 	fileExists : function (path) {
 		return fs.existsSync(path);
@@ -51,21 +47,11 @@ var tools = {
 			result : [name, tools.camelCase(name), tools.pascalCase(name)]
 		}
 	},
-	log : function (message) {
-		console.log(message);
-	},
-	logSuccess : function (message) {
-		console.log('\x1b[33m%s\x1b[0m', message);
-	},
-	logError : function (message) {
-		console.log('\x1b[31m%s\x1b[0m', message);
-	},
-	// if we know what the problem is notify user [without the error line info/stack trace] and exit
-	throwError : function (error) {
-		tools.logError(error);
-		process.exit(0);
-	},
-	prefix : '',
+
+	log : logging.log,
+	logSuccess : logging.logSuccess,
+	logError : logging.logError,
+	throwError : logging.throwError,
 
 	readdirSync : function (path) {
 		return fs.readdirSync(path)
@@ -81,14 +67,48 @@ var tools = {
 			}
 		});
 	},
+	runCommandSync : function (command) {
+		return execSync(command);
+	},
 
-	removeFile: function (path) {
+	removeFile : function (path) {
 		return fs.unlinkSync(path);
 	},
 
-	updateIndex: function (command) {
-		tools.runCommand(command ? command : '' + 'ngt g i --update')
-	}
+	updateIndex : function (pathBefore, command) {
+		tools.runCommand((command ? command : '') + 'cd \'' + pathBefore + '\' && ngt g i --update')
+	},
+
+	getPlatform : helpers.getPlatform,
+
+	isWinOS : helpers.isWinOS,
+
+	getOSDirCharacter : helpers.getOSDirCharacter,
+
+	getCurrentDirectoryName : helpers.getCurrentDirectoryName,
+
+	getName : helpers.getName,
+
+	getRuntimeData : function (component, type, paths) {
+		var name = helpers.getName(component);
+
+		if (name.indexOf(helpers.getOSDirCharacter()) != -1) {
+			paths.pathBefore = name.split(helpers.getOSDirCharacter());
+			name = paths.pathBefore.pop();
+			paths.pathBefore = paths.pathBefore.join(helpers.getOSDirCharacter()) + helpers.getOSDirCharacter();
+			tools.runCommandSync('mkdir -p \'' + paths.pathBefore + '\'');
+		}
+		if (!name || !name.length) {
+			name = paths.pathBefore.split(helpers.getOSDirCharacter()).reverse()[0];
+			if (!name.length) { //if the name passed in ended with a '/'
+				name = paths.pathBefore.split(helpers.getOSDirCharacter()).reverse()[1];
+			}
+		}
+
+		paths.ts = paths.pathBefore + name + '.' + type + '.ts';
+
+		return [name, paths]
+	},
 };
 
 module.exports = tools;
