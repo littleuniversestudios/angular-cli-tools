@@ -80,6 +80,14 @@ var tools = {
 				console.log(stdout)
 			}
 		});
+	},
+
+	removeFile: function (path) {
+		return fs.unlinkSync(path);
+	},
+
+	updateIndex: function (command) {
+		tools.runCommand(command ? command : '' + 'ngt g i --update')
 	}
 };
 

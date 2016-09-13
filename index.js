@@ -28,6 +28,9 @@ var matchCommands = {
 	'generate index' : function (cmd) {
 		return resolvePath('/bin/generate-index.js') + ' ' + cmd.slice(3).join(' ');
 	},
+	'generate module' : function (cmd) {
+		return resolvePath('/bin/generate-module.js') + ' ' + cmd.slice(3).join(' ');
+	},
 	'--help' : function () {
 		return resolvePath('/bin/help/default.js')
 	},
@@ -46,7 +49,9 @@ expandShort('p', 'pipe');
 expandShort('r', 'route');
 expandShort('d', 'directive');
 expandShort('s', 'service');
+expandShort('m', 'module');
 expandShort('i', 'index');
+expandShort('-u', '--update');
 
 runJob = matchCommands[command[2] + (command[3] ? ' ' + command[3] : '')];
 typeof runJob != 'function' ? runJob = matchCommands['--help'] : null;

@@ -3,7 +3,7 @@
 var tools = require('./api/tools');
 
 var component = process.argv.slice('2');
-var name = component[1];
+var name = component[1] ? component[1] : tools.throwError('You need to provide a name!');
 var styleType = component[2] == '--css' ? 'css' : 'scss';
 
 var paths = {
@@ -21,6 +21,7 @@ var replace = tools.setupReplace(name);
 if (tools.fileExists(paths.directory)) {
 	tools.throwError('Directory ' + paths.directory + ' already exists!');
 }
+
 
 try {
 	tools.makeDirSync(paths.directory);

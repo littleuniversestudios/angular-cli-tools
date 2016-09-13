@@ -1,13 +1,23 @@
 #! /usr/bin/env node
 var tools = require('./api/tools');
+var shouldUpdate = process.argv.slice('2')[1] == '--update';
 
 var paths = {
 	baseTs : __dirname + '/base/index-ts.txt',
 	ts : tools.prefix + 'index.ts',
 };
 
+var success = ['Created Index', 'Created ' + paths.ts];
+
+if (shouldUpdate) {
+	if (tools.fileExists(paths.ts)) {
+		tools.removeFile(paths.ts);
+		success = ['Updated index.ts'];
+	}
+}
+
 if (tools.fileExists(paths.ts)) {
-	tools.throwError('File ' + paths.ts + ' already exists!');
+	tools.throwError('File ' + paths.ts + ' already exists! To update run with the flag --update.');
 }
 
 try {
@@ -22,8 +32,9 @@ try {
 		tools.copyBaseComponent(paths.baseTs, (paths.ts), function () {
 			try {
 				tools.replaceInFile(paths.ts, ['$exports$'], [indexFileContents], (paths.ts), function () {
-					tools.logSuccess('Created Index');
-					tools.logSuccess('Created ' + paths.ts);
+					success.forEach(function (element) {
+						tools.logSuccess(element);
+					})
 				});
 			} catch (error) {
 				throw error;
