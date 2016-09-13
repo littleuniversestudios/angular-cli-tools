@@ -1,6 +1,6 @@
 {
   "name": "angular-cli-tools",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Command Line Interface tools for using with existing Angular 2 projects.",
   "main": "index.js",
   "bin": {
