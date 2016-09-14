@@ -98,7 +98,7 @@ var tools = {
 			return dirname + tools.getOSDirCharacter() + 'base' + tools.getOSDirCharacter() + type + '-ts.txt';
 		},
 		ts : function (paths, name, type) {
-			return paths.pathBefore + (name == 'index' ? '' :name + '.') + type + '.ts';
+			return paths.pathBefore + (name == 'index' ? '' : name + '.') + type + '.ts';
 		},
 	},
 
@@ -122,15 +122,23 @@ var tools = {
 		return [name, paths];
 	},
 
+	allowRelativePaths : helpers.allowRelativePaths,
+
 	getRuntimeData : function (component, type, dirname) {
 		var paths = {
 			baseTs : '',
 			pathBefore : ''
 		};
 		var name = tools.getName(component);
-		var data = tools.processRecursiveRequest(name, paths);
-		name = data[0];
-		paths = data[1];
+		if (tools.allowRelativePaths) {
+			var data = tools.processRecursiveRequest(name, paths);
+			name = data[0];
+			paths = data[1];
+		} else {
+			if (name.indexOf(tools.getOSDirCharacter()) != -1) {
+				tools.throwError('Relative paths are not supported yet...')
+			}
+		}
 
 		if (!name || !name.length) {
 			name = paths.pathBefore.split(tools.getOSDirCharacter()).reverse()[0];

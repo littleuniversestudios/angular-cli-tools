@@ -6,8 +6,6 @@ var component = process.argv.slice('2');
 
 var data = tools.getRuntimeData(component[1], 'service', __dirname);
 
-console.log(data);
-
 var name = data[0];
 var paths = data[1];
 

@@ -32,6 +32,8 @@ var helpers = {
 		}).join('');
 
 	},
+
+	allowRelativePaths : false
 };
 
 module.exports = helpers;
