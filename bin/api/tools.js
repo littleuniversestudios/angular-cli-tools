@@ -1,7 +1,6 @@
 var fs = require('fs');
 var exec = require('child_process').exec;
 var execSync = require('child_process').execSync;
-var windows = process.platform == 'win32';
 var logging = require('./logging');
 var helpers = require('./helpers');
 
@@ -76,7 +75,7 @@ var tools = {
 	},
 
 	updateIndex : function (pathBefore, command) {
-		tools.runCommand((command ? command : '') + 'cd \'' + pathBefore + '\' && ngt g i --update')
+		tools.runCommand(command ? command : '' + (pathBefore ? ('cd "' + pathBefore + '"') : '') + ' && ngt g i --update');
 	},
 
 	getPlatform : helpers.getPlatform,
@@ -89,15 +88,50 @@ var tools = {
 
 	getName : helpers.getName,
 
-	getRuntimeData : function (component, type, paths) {
-		var name = helpers.getName(component);
+	getPathOnOs : function (win32, path) {
+		if (win32) return path.split('/').join('\\'); //if windows
+		return path.split('\\').join('/'); //if anything else
+	},
 
-		if (name.indexOf(helpers.getOSDirCharacter()) != -1) {
+	getPath : {
+		baseTs : function (dirname, type) {
+			return dirname + tools.getOSDirCharacter() + 'base' + tools.getOSDirCharacter() + type + '-ts.txt';
+		},
+		ts : function (paths, name, type) {
+			return paths.pathBefore + (name == 'index' ? '' :name + '.') + type + '.ts';
+		},
+	},
+
+	getCreateDirCommand : function (path) {
+		if (tools.isWinOS()) return 'if not exist "' + path + '" mkdir "' + path + '"';
+		return 'mkdir -p "' + path + '"'
+	},
+
+	createDirs : function (path) {
+		tools.runCommandSync(tools.getCreateDirCommand(path));
+	},
+
+	processRecursiveRequest : function (name, paths) {
+		name = tools.getPathOnOs(tools.isWinOS, name);
+		if (name.indexOf(tools.getOSDirCharacter()) != -1) {
 			paths.pathBefore = name.split(helpers.getOSDirCharacter());
 			name = paths.pathBefore.pop();
 			paths.pathBefore = paths.pathBefore.join(helpers.getOSDirCharacter()) + helpers.getOSDirCharacter();
-			tools.runCommandSync('mkdir -p \'' + paths.pathBefore + '\'');
+			tools.createDirs(paths.pathBefore);
 		}
+		return [name, paths];
+	},
+
+	getRuntimeData : function (component, type, dirname) {
+		var paths = {
+			baseTs : '',
+			pathBefore : ''
+		};
+		var name = helpers.getName(component);
+		var data = tools.processRecursiveRequest(name, paths);
+		name = data[0];
+		paths = data[1];
+
 		if (!name || !name.length) {
 			name = paths.pathBefore.split(helpers.getOSDirCharacter()).reverse()[0];
 			if (!name.length) { //if the name passed in ended with a '/'
@@ -105,7 +139,8 @@ var tools = {
 			}
 		}
 
-		paths.ts = paths.pathBefore + name + '.' + type + '.ts';
+		paths.baseTs = tools.getPath.baseTs(dirname, type);
+		paths.ts = tools.getPath.ts(paths, type == 'index' ? type : name, type);
 
 		return [name, paths]
 	},

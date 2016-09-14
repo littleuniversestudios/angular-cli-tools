@@ -4,9 +4,7 @@ var tools = require('./api/tools');
 
 var component = process.argv.slice('2');
 
-var data = tools.getRuntimeData(component[1], 'class', {
-	baseTs : __dirname + '/base/class-ts.txt',
-});
+var data = tools.getRuntimeData(component[1], 'class', __dirname);
 
 var name = data[0];
 var paths = data[1];

@@ -1,11 +1,12 @@
 #! /usr/bin/env node
 var tools = require('./api/tools');
-var shouldUpdate = process.argv.slice('2')[1] == '--update';
+var component = process.argv.slice('2');
+var shouldUpdate = component[1] == '--update' || component[2] == '--update';
 
-var paths = {
-	baseTs : __dirname + '/base/index-ts.txt',
-	ts : 'index.ts',
-};
+var data = tools.getRuntimeData(component[1] == '--update' ? component[2] : component[1], 'index', __dirname);
+
+var name = data[0];
+var paths = data[1];
 
 var success = ['Created Index', 'Created ' + paths.ts];
 
@@ -16,13 +17,14 @@ if (shouldUpdate) {
 	}
 }
 
+
 if (tools.fileExists(paths.ts)) {
 	tools.throwError('File ' + paths.ts + ' already exists! To update run with the flag --update.');
 }
 
 try {
-
-	var files = tools.readdirSync('./');
+	console.log(paths);
+	var files = tools.readdirSync(paths.pathBefore ? paths.pathBefore : './');
 	var indexFileContents = '';
 	files.forEach(function (element, index) {
 		if (element.indexOf('ts') != -1) indexFileContents += "export * from './" + element.split('.ts').join('') + "';\n"
