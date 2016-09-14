@@ -75,7 +75,7 @@ var tools = {
 	},
 
 	updateIndex : function (pathBefore, command) {
-		tools.runCommand(command ? command : '' + (pathBefore ? ('cd "' + pathBefore + '"') : '') + ' && ngt g i --update');
+		tools.runCommand(command ? command : '' + (pathBefore ? ('cd "' + pathBefore + '" && ') : '') + 'ngt g i --update');
 	},
 
 	getPlatform : helpers.getPlatform,
@@ -112,11 +112,11 @@ var tools = {
 	},
 
 	processRecursiveRequest : function (name, paths) {
-		name = tools.getPathOnOs(tools.isWinOS, name);
+		name = tools.getPathOnOs(tools.isWinOS(), name);
 		if (name.indexOf(tools.getOSDirCharacter()) != -1) {
-			paths.pathBefore = name.split(helpers.getOSDirCharacter());
+			paths.pathBefore = name.split(tools.getOSDirCharacter());
 			name = paths.pathBefore.pop();
-			paths.pathBefore = paths.pathBefore.join(helpers.getOSDirCharacter()) + helpers.getOSDirCharacter();
+			paths.pathBefore = paths.pathBefore.join(tools.getOSDirCharacter()) + tools.getOSDirCharacter();
 			tools.createDirs(paths.pathBefore);
 		}
 		return [name, paths];
@@ -127,21 +127,20 @@ var tools = {
 			baseTs : '',
 			pathBefore : ''
 		};
-		var name = helpers.getName(component);
+		var name = tools.getName(component);
 		var data = tools.processRecursiveRequest(name, paths);
 		name = data[0];
 		paths = data[1];
 
 		if (!name || !name.length) {
-			name = paths.pathBefore.split(helpers.getOSDirCharacter()).reverse()[0];
+			name = paths.pathBefore.split(tools.getOSDirCharacter()).reverse()[0];
 			if (!name.length) { //if the name passed in ended with a '/'
-				name = paths.pathBefore.split(helpers.getOSDirCharacter()).reverse()[1];
+				name = paths.pathBefore.split(tools.getOSDirCharacter()).reverse()[1];
 			}
 		}
 
 		paths.baseTs = tools.getPath.baseTs(dirname, type);
 		paths.ts = tools.getPath.ts(paths, type == 'index' ? type : name, type);
-
 		return [name, paths]
 	},
 };

@@ -23,7 +23,6 @@ if (tools.fileExists(paths.ts)) {
 }
 
 try {
-	console.log(paths);
 	var files = tools.readdirSync(paths.pathBefore ? paths.pathBefore : './');
 	var indexFileContents = '';
 	files.forEach(function (element, index) {
