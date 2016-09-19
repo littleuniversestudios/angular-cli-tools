@@ -6,7 +6,11 @@
   "bin": {
     "ngt": "index.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "mkdirp": "^0.5.1",
+    "ncp": "^2.0.0",
+    "find-node-modules": "1.0.3"
+  },
   "devDependencies": {},
   "repository": {
     "type": "git",
