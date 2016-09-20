@@ -1,15 +1,10 @@
 #! /usr/bin/env node
-
-var tools = require('../api/tools');
 var config = require('../config');
 var mainCommands = require('./main-commands');
-
 
 var commands = {
 	runUserCommand : function (userCommand) {
 		var cliCommand = commands.formatUserCommand(userCommand);
-		console.log('cli command: ', cliCommand);
-
 		var mainCommand = cliCommand.commands[0];
 
 		//if no main command found show help file unless --version present

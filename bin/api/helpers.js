@@ -1,5 +1,3 @@
-var tools = require('./tools');
-
 var helpers = {
 	getPlatform : function () {
 		return process.platform;

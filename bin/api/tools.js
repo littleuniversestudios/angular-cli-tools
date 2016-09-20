@@ -1,6 +1,7 @@
 var fs = require('fs');
 var logging = require('./logging');
 var helpers = require('./helpers');
+var findNodeModules = require('find-node-modules');
 
 var tools = {
 
@@ -68,6 +69,11 @@ var tools = {
 		return lastChar === '/' || lastChar === '\\';
 	},
 
+	//returns either the absolute path to the project's node_module file or undefined if not found;
+	getNodeModulesPath : function () {
+		return findNodeModules({relative : false})[0];
+	},
+
 	/*
 	 Match the variables in the templates (component.ts.txt) to the what the user has defined in the command
 	 */
@@ -102,7 +108,13 @@ var tools = {
 
 	getCurrentDirectoryName : helpers.getCurrentDirectoryName,
 
-	getName : helpers.getName
+	getName : helpers.getName,
+
+	isvFlagPresent : function (vFlags, vFlag) {
+		vFlags = vFlags || [];
+		vFlag = vFlag || '';
+		return vFlags.indexOf(vFlag) >= 0;
+	}
 
 };
 

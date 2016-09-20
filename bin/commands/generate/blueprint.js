@@ -1,7 +1,6 @@
 var path = require('path');
 var tools = require('../../api/tools');
 var config = require('../../config');
-var findNodeModules = require('find-node-modules');
 var mkdirp = require('mkdirp');
 
 var blueprint = {
@@ -33,9 +32,8 @@ var blueprint = {
 	 * Name can be blank, regular name, or name with a relative path
 	 */
 	extractNameData : function (blueprintName) {
-		console.log('name:', blueprintName);
 		var nameData = {};
-		if (blueprintName == '' || blueprintName == undefined) {
+		if (blueprintName == './' || blueprintName == '' || blueprintName == undefined) {
 			nameData.name = tools.getCurrentDirectoryName();
 			nameData.destinationDirectory = './';
 		} else {
@@ -80,10 +78,10 @@ var blueprint = {
 		var templateLocation = config.appRoot + config.templates.root + scaffoldType + '.' + fileType + config.templates.fileFormat;
 
 		//is it using the templates from user's project directory (/project_directory/angular-cli-tools/templates/...)
-		var nodeModulesPath = findNodeModules({relative : false});
+		var nodeModulesPath = tools.getNodeModulesPath({relative : false});
 
-		if (nodeModulesPath.length > 0) {
-			var localTemplateLocation = path.resolve(nodeModulesPath[0], '../angular-cli-tools/templates/' + templateFileName);
+		if (nodeModulesPath) {
+			var localTemplateLocation = path.resolve(nodeModulesPath, '../angular-cli-tools/templates/' + templateFileName);
 
 			if (tools.fileExists(localTemplateLocation)) {
 				templateLocation = localTemplateLocation;

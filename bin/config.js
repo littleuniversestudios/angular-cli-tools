@@ -16,29 +16,34 @@ var config = {
 				'i' : 'install',
 				'h' : 'help',
 				'u' : 'update',
-				'v' : 'version',
+				'v' : 'version'
+			},
+			install : {
+				't' : 'templates',
+				'c' : 'config'
 			},
 			components : {
 				'c' : 'component',
 				'cl' : 'class',
 				'd' : 'directive',
 				'i' : 'index',
-				'in' : 'interface',
 				'int' : 'interface',
 				'e' : 'enum',
 				'm' : 'module',
 				'p' : 'pipe',
 				'r' : 'route',
-				's' : 'service',
+				's' : 'service'
 			},
-			flags:{
+			flags : {
 				'-b' : '--bootstrap',
+				'-c' : '--css',
+				'-css' : '--css',
 				'-m' : '--material',
 				'-v' : '--version',
 				'-h' : '--help',
+				'-f' : '--force'
 			},
-			seeds : {
-			}
+			seeds : {}
 		}
 	}
 };

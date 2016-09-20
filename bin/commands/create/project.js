@@ -10,39 +10,49 @@ var project = {
 			basic : {
 				dependencies : {
 					"font-awesome" : "^4.6.3",
-					"moment" : "2.15.0"
 				},
-				devDependencies : {
-					"angular-cli-tools" : "",
-				},
+				devDependencies : {},
 				gitignore : [
 					'# Angular-cli-Tools #',
 					'angular-cli-tools'
 				]
 			},
 			material : {
-				ng2SrcFolder : '',
-				dependencies : {
-					"font-awesome" : "^4.6.3",
-					"moment" : "2.15.0"
-				}
+				srcFolder : '',
+				devDependencies : {},
+				dependencies : {},
+				gitignore : []
 			},
 			bootstrap : {
-				ng2SrcFolder : '',
+				srcFolder : '',
+				devDependencies : {},
 				dependencies : {
 					"font-awesome" : "^4.6.3",
-					"moment" : "2.15.0"
-				}
+					"moment" : "2.15.0",
+					"ng2-bootstrap" : "^1.1.5",
+					"bootstrap" : "^4.0.0-alpha.4"
+				},
+				gitignore : []
 			}
 		}
 	},
-	create : function (seedType) {
+	create : function (seedType, targetInstallDirectory) {
+		//where the project will be generated
+		targetInstallDirectory = targetInstallDirectory || './';
 
 		//default to basic seed
 		seedType = seedType || 'basic';
 
-		//where the project will be generated
-		var targetInstallDirectory = './';
+		if (!tools.fileExists(targetInstallDirectory)) {
+			mkdirp(targetInstallDirectory, function (err) {
+				if (err) throw err;
+				project.makeProject(seedType, targetInstallDirectory);
+			})
+		} else {
+			project.makeProject(seedType, targetInstallDirectory);
+		}
+	},
+	makeProject : function (seedType, targetInstallDirectory) {
 
 		// only create new project in empty directory as to not overwrite something else in the folder
 		if (tools.readdirSync(targetInstallDirectory).length != 0) {
@@ -58,7 +68,7 @@ var project = {
 			if (err) throw err;
 
 			// copy the angular-cli-tools templates so user can edit/customize templates locally
-			var localTemplatesDirectory = './angular-cli-tools/templates';
+			var localTemplatesDirectory = targetInstallDirectory + 'angular-cli-tools/templates';
 
 			//first make the './angular-cli-tools/templates' directory
 			mkdirp(localTemplatesDirectory, function (err) {
@@ -66,7 +76,7 @@ var project = {
 
 				//then copy templates to './angular-cli-tools/templates'
 				var templatesDirectory = config.appRoot + config.templates.root;
-				ncp(templatesDirectory, './angular-cli-tools/templates', function (err) {
+				ncp(templatesDirectory, localTemplatesDirectory, function (err) {
 					if (err) throw err;
 
 					// add angular-cli-tools to .gitignore file
@@ -89,7 +99,8 @@ var project = {
 
 						//done, notify user to 'npm start' to run angular 2 app
 						tools.log(
-							tools.logColorCyan('Angular 2 project generated. \n'),
+							tools.logColorCyan('Angular 2 project generated in: '),
+							tools.logColorYellow(targetInstallDirectory + ' \n'),
 							tools.logColorCyan(' run:'),
 							tools.logColorYellow('   npm install'),
 							tools.logColorCyan('\n to install all project dependencies. Once dependencies are installed \n'),
@@ -140,34 +151,7 @@ var project = {
 			}
 		}
 		return packageFile;
-	},
-
-	createMaterial : function () {
-
-		// create basic project
-
-		//overwrite /src folder with: [material /src folder]
-
-		// add following packages to dependencies for bootstrap
-		//    "font-awesome": "^4.6.3",
-		//    "moment": "2.15.0",
-
-	},
-
-	createBootstrap : function () {
-		// create basic project
-
-		//overwrite /src folder with: [bootstrap /src folder]
-
-		// add following packages to dependencies for bootstrap
-		//    "bootstrap": "^4.0.0-alpha.4",
-		//    "font-awesome": "^4.6.3",
-		//    "moment": "2.15.0",
-		//    "ng2-bootstrap": "1.1.2",
-
 	}
-
-
 }
 
 module.exports = project;

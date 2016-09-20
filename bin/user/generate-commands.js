@@ -1,25 +1,22 @@
 #! /usr/bin/env node
+var path = require('path');
 var config = require('../config');
 var tools = require('../api/tools');
 var blueprint = require('../commands/generate/blueprint');
 var indexBlueprint = require('../commands/generate/index');
-var componentBlueprint = require('../commands/generate/component');
 var generalBlueprint = require('../commands/generate/blueprint');
-var project = require('../commands/create/project');
+
 
 var generateCommands = {
 	generateBlueprint : function (blueprintType, blueprintName, vFlags) {
 		blueprintType = config.command.shorthand.components[blueprintType] || blueprintType; //if blueprint comes in shorthand form
-		console.log('blueprint type:', blueprintType);
-		console.log('blueprint name:', blueprintName);
-		console.log('blueprint vFlags:', vFlags);
 
 		switch (blueprintType) {
 			case 'index':
 				blueprintName = tools.pathEndsWithSlash(blueprintName) ? blueprintName : blueprintName + '/';
 				var indexData = blueprint.extractNameData(blueprintName);
 				indexBlueprint.generateCommand(indexData.destinationDirectory);
-				tools.logSuccess('Created index.ts');
+				tools.logSuccess('Created ' + indexData.destinationDirectory + 'index.ts');
 				break;
 			case 'component':
 
@@ -40,13 +37,16 @@ var generateCommands = {
 				blueprint.generate(tsBlueprintMetaData, function () {
 					blueprint.generate(htmlBlueprintMetaData, function () {
 						blueprint.generate(styleBlueprintMetaData, function () {
-							indexBlueprint.updateCommand(tsBlueprintMetaData.destinationDirectory);
+							indexBlueprint.updateCommand(tsBlueprintMetaData.destinationDirectory); //update index in component dir
+							indexBlueprint.updateCommand(path.resolve(tsBlueprintMetaData.destinationDirectory + './..')); //update index one dir before component to include this newly created component
 						});
 					});
 				});
 				break;
 			case 'class':
 			case 'directive':
+			case 'enum':
+			case 'interface':
 			case 'module':
 			case 'pipe':
 			case 'route':

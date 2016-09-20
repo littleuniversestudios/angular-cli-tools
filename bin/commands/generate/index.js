@@ -15,7 +15,7 @@ var indexBlueprint = {
 
 		//see if index.ts already exists, prompt user to use update command
 		if (tools.fileExists(destinationDirectory + scaffoldData.fileName)) {
-			tools.throwError('File ' + scaffoldData.fileName + ' already exists! To update index run: \'ngt update index\' or \'ngt u i\'');
+			tools.throwError('File ' + destinationDirectory + scaffoldData.fileName + ' already exists! To update index run: \'ngt update index\' or \'ngt u i\'');
 		}
 
 		try {
