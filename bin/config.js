@@ -5,13 +5,38 @@ var config = {
 		fileFormat : '.txt'
 	},
 	seeds : {
-		root : '/seeds/',
-		basic : 'basic'
+		root : '/seeds',
+		basic : {
+			root : '/basic',
+			dependencies : {},
+			devDependencies : {},
+			gitignore : [
+				'# Angular-cli-Tools #',
+				'angular-cli-tools'
+			]
+		},
+		material : {
+			srcFolder : '/material/src',
+			devDependencies : {},
+			dependencies : {},
+			gitignore : []
+		},
+		bootstrap : {
+			srcFolder : '/bootstrap/src',
+			devDependencies : {},
+			dependencies : {
+				"font-awesome" : "^4.6.3",
+				"moment" : "2.15.0",
+				"ng2-bootstrap" : "^1.1.5",
+				"bootstrap" : "^4.0.0-alpha.4"
+			},
+			gitignore : []
+		}
 	},
 	command : {
 		shorthand : {
 			commands : {
-				'c' : 'create',
+				'n' : 'new',
 				'g' : 'generate',
 				'i' : 'install',
 				'h' : 'help',
@@ -41,7 +66,8 @@ var config = {
 				'-m' : '--material',
 				'-v' : '--version',
 				'-h' : '--help',
-				'-f' : '--force'
+				'-f' : '--force',
+				'-r' : '--recursive'
 			},
 			seeds : {}
 		}

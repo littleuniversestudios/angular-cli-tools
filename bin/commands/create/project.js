@@ -5,37 +5,6 @@ var mkdirp = require('mkdirp');
 
 
 var project = {
-	getSeedMetadata : function () {
-		return {
-			basic : {
-				dependencies : {
-					"font-awesome" : "^4.6.3",
-				},
-				devDependencies : {},
-				gitignore : [
-					'# Angular-cli-Tools #',
-					'angular-cli-tools'
-				]
-			},
-			material : {
-				srcFolder : '',
-				devDependencies : {},
-				dependencies : {},
-				gitignore : []
-			},
-			bootstrap : {
-				srcFolder : '',
-				devDependencies : {},
-				dependencies : {
-					"font-awesome" : "^4.6.3",
-					"moment" : "2.15.0",
-					"ng2-bootstrap" : "^1.1.5",
-					"bootstrap" : "^4.0.0-alpha.4"
-				},
-				gitignore : []
-			}
-		}
-	},
 	create : function (seedType, targetInstallDirectory) {
 		//where the project will be generated
 		targetInstallDirectory = targetInstallDirectory || './';
@@ -60,7 +29,7 @@ var project = {
 		}
 
 		// get the location of the seed project
-		var seedDirectory = config.appRoot + config.seeds.root + config.seeds.basic;
+		var seedDirectory = config.appRoot + config.seeds.root + config.seeds.basic.root;
 
 		// copy the seed project
 		ncp(seedDirectory, targetInstallDirectory, function (err) {
@@ -91,36 +60,63 @@ var project = {
 					packageFile = project.addDependencies(packageFile, seedType); //add other seed dev/dependencies on top of basic seed dev/dependencies
 
 
-					tools.writeFile(packageFileLocation, JSON.stringify(packageFile), function () {
+					tools.writeFile(packageFileLocation, JSON.stringify(packageFile, null, 4), function () {
 
 						//hold off on automatically installing dependencies
 						// run npm install to install all packages
 						//tools.runCommand('npm install');
 
-						//done, notify user to 'npm start' to run angular 2 app
-						tools.log(
-							tools.logColorCyan('Angular 2 project generated in: '),
-							tools.logColorYellow(targetInstallDirectory + ' \n'),
-							tools.logColorCyan(' run:'),
-							tools.logColorYellow('   npm install'),
-							tools.logColorCyan('\n to install all project dependencies. Once dependencies are installed \n'),
-							tools.logColorCyan(' run:'),
-							tools.logColorYellow('   npm start'),
-							tools.logColorCyan('\n to start your ng2 project on: '),
-							tools.logColorYellow('localhost:8080')
-						);
+						// if any other seed than the 'basic' seed, overwrite 'src' directory using selected seed's src (bootstrap|material)
+						if (seedType != 'basic') {
+							ncp(config.appRoot + config.seeds.root + config.seeds[seedType].srcFolder, targetInstallDirectory + '/src', {clobber : true}, function (err) {
+								if (err) throw err;
+								project.displaySuccessMessage(seedType, targetInstallDirectory);
+							});
+						} else {
+							project.displaySuccessMessage(seedType, targetInstallDirectory);
+						}
 					});
 				});
 			});
 		});
 	},
+	displaySuccessMessage : function (seedType, targetInstallDirectory) {
+		//done, notify user to 'npm start' to run angular 2 app
+		if (!project.successMessageDisplayed) {
+			var logMessage = '';
+
+			logMessage += tools.logColorCyan('Angular 2');
+			if (seedType != 'basic') {
+				logMessage += tools.logColorCyan(' [' + seedType + ']');
+			}
+			logMessage += tools.logColorCyan(' project generated!' + ' \n');
+			if (targetInstallDirectory != './') {
+				logMessage += tools.logColorCyan(' run:');
+				logMessage += tools.logColorYellow('   cd ' + targetInstallDirectory);
+				logMessage += tools.logColorCyan('    (to go to your new project root directory)' + ' \n');
+			}
+			logMessage += tools.logColorCyan(' run:');
+			logMessage += tools.logColorYellow('   npm install');
+			logMessage += tools.logColorCyan('\n to install all project dependencies. Once dependencies are installed \n');
+			logMessage += tools.logColorCyan(' run:');
+			logMessage += tools.logColorYellow('   npm start');
+			logMessage += tools.logColorCyan('\n to start your ng2 project on: ');
+			logMessage += tools.logColorYellow('localhost:8080');
+
+			tools.log(logMessage);
+			//this is bit of a hack to prevent ncp from displaying the success message on every recursive folder copy
+			// currently ncp fires the callback on every folder copy (so with a deeply nested folder callback might fire a few times)
+			//TODO: find a more suited recursive copy folder module w/ few dependencies.
+			project.successMessageDisplayed = true;
+		}
+	},
+	successMessageDisplayed : false,
 
 	getGitIgnoreFileAdditions : function (seedType) {
 		seedType = seedType || basic;
 		var gitIgnoreAddition = '\n';
-		var seedMetaData = project.getSeedMetadata();
-		var basicGitIgnoreAdditions = seedMetaData['basic'].gitignore || [];
-		var seedGitIgnoreAdditions = seedMetaData[seedType].gitignore || [];
+		var basicGitIgnoreAdditions = config.seeds['basic'].gitignore || [];
+		var seedGitIgnoreAdditions = config.seeds[seedType].gitignore || [];
 
 		basicGitIgnoreAdditions.forEach(function (addition) {
 			gitIgnoreAddition += addition + '\n';
@@ -135,9 +131,8 @@ var project = {
 	},
 
 	addDependencies : function (packageFile, seedType) {
-		var seedMetaData = project.getSeedMetadata();
-		var listOfDependencies = seedMetaData[seedType].dependencies || {};
-		var listOfDevDependencies = seedMetaData[seedType].devDependencies || {};
+		var listOfDependencies = config.seeds[seedType].dependencies || {};
+		var listOfDevDependencies = config.seeds[seedType].devDependencies || {};
 
 		for (var dependencyName in listOfDependencies) {
 			if (listOfDependencies.hasOwnProperty(dependencyName)) {

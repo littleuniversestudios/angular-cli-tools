@@ -23,7 +23,7 @@ var mainCommands = {
 				var blueprintName = restOfCommands[1] || './';
 				updateCommands.updateComponent(blueprintType, blueprintName, vFlags);
 				break;
-			case 'create':
+			case 'new':
 				var destinationDirectory = restOfCommands[0] || './';
 				createCommands.newProject(destinationDirectory, vFlags);
 				break;

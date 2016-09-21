@@ -110,6 +110,19 @@ var tools = {
 
 	getName : helpers.getName,
 
+	/*
+	 * return file extension. Example: test.component.ts => ts
+	 */
+	getFileExtension : function (fileName) {
+		return fileName.substr(fileName.lastIndexOf('.') + 1)
+	},
+	/*
+	 * return only the file name without the extension. Example:  test.component.ts => test.component
+	 */
+	getFileName : function (fileNameWithExtension) {
+		return fileNameWithExtension.substr(0, fileNameWithExtension.lastIndexOf('.'))
+	},
+
 	isvFlagPresent : function (vFlags, vFlag) {
 		vFlags = vFlags || [];
 		vFlag = vFlag || '';

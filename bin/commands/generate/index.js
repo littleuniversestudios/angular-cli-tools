@@ -1,3 +1,4 @@
+var path = require('path');
 var tools = require('../../api/tools');
 var blueprint = require('./blueprint');
 
@@ -6,6 +7,7 @@ var indexBlueprint = {
 
 		//can generate an index in a different file location
 		destinationDirectory = destinationDirectory || './'; //default to local directory
+		destinationDirectory = tools.pathEndsWithSlash(destinationDirectory) ? destinationDirectory : destinationDirectory + '/';
 
 		// get blueprint for index.ts
 		var scaffoldData = blueprint.getMetadata('index', 'index', 'ts');
@@ -30,9 +32,9 @@ var indexBlueprint = {
 				if (tools.isDirectory(destinationDirectory + '/' + fileName)) {
 					//is it a folder
 					indexFileContents += "export * from './" + fileName + "';\n"
-				} else if (fileName.indexOf('ts') != -1) {
+				} else if (tools.getFileExtension(fileName) == 'ts') {
 					//is it a .ts file
-					indexFileContents += "export * from './" + fileName.split('.ts').join('') + "';\n"
+					indexFileContents += "export * from './" + tools.getFileName(fileName) + "';\n"
 				}
 
 			});
@@ -52,7 +54,9 @@ var indexBlueprint = {
 	updateCommand : function (destinationDirectory) {
 
 		//can update an index in a different file location
-		destinationDirectory = destinationDirectory || '';
+		destinationDirectory = destinationDirectory || './';
+		destinationDirectory = tools.pathEndsWithSlash(destinationDirectory) ? destinationDirectory : destinationDirectory + '/';
+
 
 		//index.ts file is always 'index.ts'
 		var fileName = 'index.ts';
@@ -64,6 +68,28 @@ var indexBlueprint = {
 
 		//create new 'index.ts' file
 		indexBlueprint.generateCommand(destinationDirectory);
+	},
+
+	updateRecursive : function (startDirectory, updatedFiles) {
+		//make sure the current directory has a end slash '/'...easier to combine with other files/folders
+		var currentDirectory = tools.pathEndsWithSlash(startDirectory) ? startDirectory : startDirectory + '/';
+
+		//update the index in current directory
+		indexBlueprint.updateCommand(currentDirectory);
+
+		//add to the list of updated index files
+		updatedFiles.push(currentDirectory + 'index.ts');
+
+		//read all files from directory
+		var files = tools.readdirSync(currentDirectory);
+		files.forEach(function (file) {
+			if (tools.isDirectory(currentDirectory + file)) {
+				var nextDirectory = tools.pathEndsWithSlash(currentDirectory) ? currentDirectory + file : currentDirectory + '/' + file;
+				return indexBlueprint.updateRecursive(nextDirectory, updatedFiles);
+			}
+		});
+		return updatedFiles;
+
 	}
 };
 module.exports = indexBlueprint;

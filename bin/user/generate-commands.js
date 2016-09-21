@@ -26,7 +26,8 @@ var generateCommands = {
 				}
 
 				//Check if user provided a style type. Default to 'scss'.
-				var styleType = vFlags.indexOf('--css') >= 0 ? 'css' : 'scss';
+				var styleType = tools.isvFlagPresent(vFlags, '--css') ? 'css' : 'scss';
+				var generateTestFile = tools.isvFlagPresent(vFlags, '--spec'); //TODO: use this flag to generate test file
 
 				//generate blueprints for ts, html, css.scss
 				var tsBlueprintMetaData = generalBlueprint.getMetadata('component', blueprintName, 'ts');
@@ -37,6 +38,7 @@ var generateCommands = {
 				blueprint.generate(tsBlueprintMetaData, function () {
 					blueprint.generate(htmlBlueprintMetaData, function () {
 						blueprint.generate(styleBlueprintMetaData, function () {
+							//TODO: generateTestFile here if(generateTestFile){ //create the spec.ts file}
 							indexBlueprint.updateCommand(tsBlueprintMetaData.destinationDirectory); //update index in component dir
 							indexBlueprint.updateCommand(path.resolve(tsBlueprintMetaData.destinationDirectory + './..')); //update index one dir before component to include this newly created component
 						});
