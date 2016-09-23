@@ -4,11 +4,14 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
     templateUrl: 'bootstrap-examples.component.html',
     styleUrls: ['bootstrap-examples.component.scss'],
 })
-export class BootstrapExamples implements OnInit,OnDestroy {
+export class BootstrapExamplesComponent implements OnInit, OnDestroy {
+
     constructor() {
     }
+
     ngOnInit() {
     }
+
     ngOnDestroy() {
     }
 }

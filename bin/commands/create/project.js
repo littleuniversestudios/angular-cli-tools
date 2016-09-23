@@ -2,6 +2,7 @@ var tools = require('../../api/tools');
 var config = require('../../config');
 var ncp = require('ncp').ncp;
 var mkdirp = require('mkdirp');
+// const download = require('download'); //experimental
 
 
 var project = {
@@ -21,6 +22,19 @@ var project = {
 			project.makeProject(seedType, targetInstallDirectory);
 		}
 	},
+	//experimental
+	// createFromURL : function (url, targetInstallDirectory) {
+	// 	console.log('url: ', url);
+	//
+	// 	var dl = download(url, targetInstallDirectory, {extract : true, strip : 1});
+	// 	dl.on('error', function (err) {
+	// 		throw err;
+	// 	});
+	//
+	// 	dl.on('close', function () {
+	// 		console.log('hmmmmmm');
+	// 	});
+	// },
 	makeProject : function (seedType, targetInstallDirectory) {
 
 		// only create new project in empty directory as to not overwrite something else in the folder
@@ -85,11 +99,13 @@ var project = {
 		if (!project.successMessageDisplayed) {
 			var logMessage = '';
 
-			logMessage += tools.logColorCyan('Angular 2');
+			logMessage += tools.logColorCyan('****************************************************************************\n');
+			logMessage += tools.logColorYellow('              Angular 2');
 			if (seedType != 'basic') {
-				logMessage += tools.logColorCyan(' [' + seedType + ']');
+				logMessage += tools.logColorYellow(' [' + seedType + ']');
 			}
-			logMessage += tools.logColorCyan(' project generated!' + ' \n');
+			logMessage += tools.logColorYellow(' project generated!  ' + ' \n');
+			logMessage += tools.logColorCyan('****************************************************************************\n');
 			if (targetInstallDirectory != './') {
 				logMessage += tools.logColorCyan(' run:');
 				logMessage += tools.logColorYellow('   cd ' + targetInstallDirectory);
@@ -97,11 +113,11 @@ var project = {
 			}
 			logMessage += tools.logColorCyan(' run:');
 			logMessage += tools.logColorYellow('   npm install');
-			logMessage += tools.logColorCyan('\n to install all project dependencies. Once dependencies are installed \n');
+			logMessage += tools.logColorCyan('         (to install all project dependencies)\n');
 			logMessage += tools.logColorCyan(' run:');
 			logMessage += tools.logColorYellow('   npm start');
-			logMessage += tools.logColorCyan('\n to start your ng2 project on: ');
-			logMessage += tools.logColorYellow('localhost:8080');
+			logMessage += tools.logColorCyan('           (to start your ng2 project on: ');
+			logMessage += tools.logColorYellow('localhost:8080' + tools.logColorCyan(')'));
 
 			tools.log(logMessage);
 			//this is bit of a hack to prevent ncp from displaying the success message on every recursive folder copy

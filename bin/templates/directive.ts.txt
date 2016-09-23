@@ -1,5 +1,5 @@
 @Directive({ selector: '[$name$]' })
-class $PascalCaseName$ {
+class $PascalCaseName$Directive {
   constructor() {
   }
 }

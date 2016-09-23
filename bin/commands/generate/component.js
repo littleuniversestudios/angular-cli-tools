@@ -3,13 +3,6 @@ var blueprint = require('./blueprint');
 
 var componentBlueprint = {
 	/*
-	 Get the style type when creating a component. Either a .css or .scss
-	 */
-	getComponentStyleType : function (styleParam) {
-		return ['--css', '-css', '-c'].indexOf(styleParam) >= 0 ? 'css' : 'scss'; //default to .scss
-	},
-
-	/*
 	 Create a index.ts file
 	 */
 	generateCommand : function (tsBlueprintMetaData,htmlBlueprintMetaData, styleBlueprintMetaData,callback) {

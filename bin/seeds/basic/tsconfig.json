@@ -5,15 +5,12 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "sourceMap": true,
-    "noEmitHelpers": true,
-    "types": [
-      "core-js",
-      "jasmine",
-      "node",
-      "protractor",
-      "selenium-webdriver"
-    ]
+    "noEmitHelpers": true
   },
   "compileOnSave": false,
-  "buildOnSave": false
+  "buildOnSave": false,
+  "awesomeTypescriptLoaderOptions": {
+    "forkChecker": true,
+    "useWebpackText": true
+  }
 }

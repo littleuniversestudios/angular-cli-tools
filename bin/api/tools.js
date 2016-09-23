@@ -1,6 +1,7 @@
 var fs = require('fs');
 var logging = require('./logging');
 var helpers = require('./helpers');
+var vFlagModule = require('./vFlag');
 var findNodeModules = require('find-node-modules');
 
 var tools = {
@@ -123,11 +124,14 @@ var tools = {
 		return fileNameWithExtension.substr(0, fileNameWithExtension.lastIndexOf('.'))
 	},
 
-	isvFlagPresent : function (vFlags, vFlag) {
-		vFlags = vFlags || [];
-		vFlag = vFlag || '';
-		return vFlags.indexOf(vFlag) >= 0;
-	}
+	isvFlagPresent : vFlagModule.isvFlagPresent,
+	isFlag : vFlagModule.isFlag,
+	isVFlag : vFlagModule.isVFlag,
+	getFlagMetadata : vFlagModule.getFlagMetadata,
+	convertTovFlag : vFlagModule.convertTovFlag,
+	getvFlagIdentifier : vFlagModule.getvFlagIdentifier,
+	getvFlagPayload : vFlagModule.getvFlagPayload,
+	vFlagHasPayload : vFlagModule.vFlagHasPayload
 
 };
 

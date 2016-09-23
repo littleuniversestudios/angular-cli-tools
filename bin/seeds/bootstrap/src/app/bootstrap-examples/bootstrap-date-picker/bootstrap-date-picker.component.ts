@@ -1,25 +1,25 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import * as moment from 'moment';
+
 @Component({
     selector: 'bootstrap-date-picker',
     templateUrl: 'bootstrap-date-picker.component.html',
     styleUrls: ['bootstrap-date-picker.component.scss'],
 })
-export class BootstrapDatePicker implements OnInit,OnDestroy {
+export class BootstrapDatePickerComponent implements OnInit, OnDestroy {
 
-
-    public dt:Date = new Date();
-    public minDate:Date = void 0;
-    public events:Array<any>;
-    public tomorrow:Date;
-    public afterTomorrow:Date;
-    public formats:Array<string> = ['DD-MM-YYYY', 'YYYY/MM/DD', 'DD.MM.YYYY', 'shortDate'];
-    public format:string = this.formats[0];
-    public dateOptions:any = {
+    public dt: Date = new Date();
+    public minDate: Date = void 0;
+    public events: Array<any>;
+    public tomorrow: Date;
+    public afterTomorrow: Date;
+    public formats: Array<string> = ['DD-MM-YYYY', 'YYYY/MM/DD', 'DD.MM.YYYY', 'shortDate'];
+    public format: string = this.formats[0];
+    public dateOptions: any = {
         formatYear: 'YY',
         startingDay: 1
     };
-    private opened:boolean = false;
+    private opened: boolean = false;
 
     public constructor() {
         (this.tomorrow = new Date()).setDate(this.tomorrow.getDate() + 1);
@@ -34,20 +34,20 @@ export class BootstrapDatePicker implements OnInit,OnDestroy {
     ngOnInit() {
     }
 
-    public getDate():number {
+    public getDate(): number {
         return this.dt && this.dt.getTime() || new Date().getTime();
     }
 
-    public today():void {
+    public today(): void {
         this.dt = new Date();
     }
 
-    public d20090824():void {
+    public d20090824(): void {
         this.dt = moment('2009-08-24', 'YYYY-MM-DD').toDate();
     }
 
     // todo: implement custom class cases
-    public getDayClass(date:any, mode:string):string {
+    public getDayClass(date: any, mode: string): string {
         if (mode === 'day') {
             let dayToCheck = new Date(date).setHours(0, 0, 0, 0);
 
@@ -63,19 +63,19 @@ export class BootstrapDatePicker implements OnInit,OnDestroy {
         return '';
     }
 
-    public disabled(date:Date, mode:string):boolean {
+    public disabled(date: Date, mode: string): boolean {
         return ( mode === 'day' && ( date.getDay() === 0 || date.getDay() === 6 ) );
     }
 
-    public open():void {
+    public open(): void {
         this.opened = !this.opened;
     }
 
-    public clear():void {
+    public clear(): void {
         this.dt = void 0;
     }
 
-    public toggleMin():void {
+    public toggleMin(): void {
         this.dt = new Date(this.minDate.valueOf());
     }
 

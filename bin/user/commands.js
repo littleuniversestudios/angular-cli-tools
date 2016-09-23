@@ -1,5 +1,6 @@
 #! /usr/bin/env node
-var config = require('../config');
+
+var tools = require('../api/tools');
 var mainCommands = require('./main-commands');
 
 var commands = {
@@ -23,11 +24,12 @@ var commands = {
 
 		userCommand.forEach(function (command) {
 
-			if (commands.isVFlag(command)) {
+			if (tools.isVFlag(command)) {
 				cliCommand.vFlags.push(command);
-			} else if (commands.isFlag(command)) {
-				if (config.command.shorthand.flags[command]) {
-					cliCommand.vFlags.push(config.command.shorthand.flags[command]);
+			} else if (tools.isFlag(command)) {
+				var convertedvFlag = tools.convertTovFlag(command);
+				if (tools.isVFlag(convertedvFlag)) {
+					cliCommand.vFlags.push(convertedvFlag);
 				}
 			} else {
 				cliCommand.commands.push(command);
@@ -42,14 +44,6 @@ var commands = {
 			commands : [],
 			vFlags : [],
 		};
-	},
-
-	isVFlag : function (param) {
-		return param.substring(0, 2) == '--';
-	},
-
-	isFlag : function (param) {
-		return param.substring(0, 1) == '-' && !commands.isVFlag(param);
 	}
 }
 

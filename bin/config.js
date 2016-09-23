@@ -18,7 +18,11 @@ var config = {
 		material : {
 			srcFolder : '/material/src',
 			devDependencies : {},
-			dependencies : {},
+			dependencies : {
+				"@angular2-material/core" : "^2.0.0-alpha.8-2",
+				"@angular2-material/button" : "^2.0.0-alpha.8-2",
+				"@angular2-material/card" : "^2.0.0-alpha.8-2"
+			},
 			gitignore : []
 		},
 		bootstrap : {
@@ -26,7 +30,7 @@ var config = {
 			devDependencies : {},
 			dependencies : {
 				"font-awesome" : "^4.6.3",
-				"moment" : "2.15.0",
+				"moment" : "^2.15.0",
 				"ng2-bootstrap" : "^1.1.5",
 				"bootstrap" : "^4.0.0-alpha.4"
 			},
@@ -67,7 +71,8 @@ var config = {
 				'-v' : '--version',
 				'-h' : '--help',
 				'-f' : '--force',
-				'-r' : '--recursive'
+				'-r' : '--recursive',
+				'-u' : '--url'
 			},
 			seeds : {}
 		}

@@ -4,11 +4,17 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
     templateUrl: '$name$.component.html',
     styleUrls: ['$name$.component.scss'],
 })
-export class $PascalCaseName$ implements OnInit,OnDestroy {
+export class $PascalCaseName$Component implements OnInit, OnDestroy {
+
     constructor() {
+
     }
+
     ngOnInit() {
+
     }
+
     ngOnDestroy() {
+
     }
 }

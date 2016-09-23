@@ -1,40 +1,43 @@
 import {NgModule}      from '@angular/core';
 import {CommonModule}  from '@angular/common';
-import {FormsModule}  from '@angular/forms';
-import {AlertModule, DatepickerModule, DropdownModule, ModalModule, TabsModule, TypeaheadModule, Ng2BootstrapModule} from 'ng2-bootstrap/ng2-bootstrap';
-import {BootstrapExamples}  from './bootstrap-examples.component';
-import {BootstrapAlerts}  from './bootstrap-alerts/bootstrap-alerts.component';
-import {BootstrapDropdown}  from './bootstrap-dropdown/bootstrap-dropdown.component';
-import {BootstrapDatePicker}  from './bootstrap-date-picker/bootstrap-date-picker.component';
-import {BootstrapModal}  from './bootstrap-modal/bootstrap-modal.component';
-import {BootstrapTabs}  from './bootstrap-tabs/bootstrap-tabs.component';
-import {BootstrapTypeahead}  from './bootstrap-typeahead/bootstrap-typeahead.component';
+import {BootstrapExamplesComponent} from './bootstrap-examples.component';
+import {BootstrapAlertComponent} from './bootstrap-alert/bootstrap-alert.component';
+import {BootstrapDatePickerComponent} from './bootstrap-date-picker';
+import {BootstrapDropdownComponent} from './bootstrap-dropdown';
+import {BootstrapTabsComponent} from './bootstrap-tabs';
+import {
+    AlertModule,
+    DatepickerModule,
+    DropdownModule,
+    ModalModule,
+    TabsModule,
+    TypeaheadModule,
+    Ng2BootstrapModule
+} from 'ng2-bootstrap/ng2-bootstrap';
 
 @NgModule({
     imports: [
-        FormsModule,
         CommonModule,
-        Ng2BootstrapModule,
         AlertModule,
         DatepickerModule,
         DropdownModule,
         ModalModule,
         TabsModule,
-        TypeaheadModule
+        TypeaheadModule,
+        Ng2BootstrapModule
     ],
     providers: [],
     declarations: [
-        BootstrapExamples,
-        BootstrapAlerts,
-        BootstrapDropdown,
-        BootstrapDatePicker,
-        BootstrapModal,
-        BootstrapTabs,
-        BootstrapTypeahead
+        BootstrapExamplesComponent,
+        BootstrapAlertComponent,
+        BootstrapDatePickerComponent,
+        BootstrapDropdownComponent,
+        BootstrapTabsComponent
     ],
     exports: [
-        BootstrapExamples
+        BootstrapExamplesComponent
     ]
 })
 export class BootstrapExamplesModule {
+
 }

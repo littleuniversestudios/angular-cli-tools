@@ -9,4 +9,6 @@ import { CommonModule }  from '@angular/common';
   declarations: [],
   exports: []
 })
-export class $PascalCaseName$Module { }
+export class $PascalCaseName$Module {
+
+}

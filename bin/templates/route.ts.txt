@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 //Example: import { TestComponent }      from './test.component';
 
-const $camelCaseName$Route: Routes = [
+const $camelCaseName$Routes: Routes = [
   {
   	/*Example
     path: 'TestComponent',
@@ -11,3 +11,9 @@ const $camelCaseName$Route: Routes = [
     */
   }
 ];
+
+export const appRoutingProviders: any[] = [
+
+];
+
+export const routing: ModuleWithProviders = RouterModule.forRoot($camelCaseName$Routes);

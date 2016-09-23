@@ -1,20 +1,13 @@
 // styles in src/style directory are applied to the whole page
 body {
-  margin: 0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 1rem;
-  line-height: 1.5;
-  color: #373a3c;
-  background-color: #fff;
-
+  background-color: #F1F1F1;
+  color: #fff;
 }
 
 a {
   color: #03A9F4;
 }
-a:hover {
-  color: #ffffff;
-}
-a:visited {
-  color: #03A9F4;
+
+p, h1 {
+  color: #555;
 }
