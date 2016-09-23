@@ -68,18 +68,18 @@ ngt g c layout/header/new-component
 
 ## All available blueprints:
 
-| Scaffold        | Usage (shorthand)|
-|:------------- |:-------|
-| class      | `ngt g class [class-name]*optional`|
-| [component](#component)      |` ngt g c [component-name]`|
-| directive      | `ngt g d [directive-name]*optional`|
-| enum      | `ngt g e [enum-name]*optional`|
-| index      | `ngt g i `|
-| interface      | `ngt g int [interface-name] `|
-| module      | `ngt g m [module-name]*optional`|
-| pipe      | `ngt g p [pipe-name]*optional`|
-| route      | `ngt g r [route-name]*optional`|
-| service      | `ngt g s [service-name]*optional`|
+| Scaffold        | Usage (shorthand)| Component Name Mandatory|
+|:------------- |:-------|:---:|
+| class      | `ngt g class [class-name]`| no |
+| [component](#component)      |` ngt g c [component-name]`| yes |
+| directive      | `ngt g d [directive-name]`|no |
+| enum      | `ngt g e [enum-name]`|no |
+| index      | `ngt g i `|no |
+| interface      | `ngt g int [interface-name]`|no |
+| module      | `ngt g m [module-name]`|no |
+| pipe      | `ngt g p [pipe-name]`|no |
+| route      | `ngt g r [route-name]`|no |
+| service      | `ngt g s [service-name]`|no |
 
 #### Optional Blueprint Names
 Notice the *optional 'name' parameter above. For every blueprint (except the 'Component' blueprint) Angular CLI Tools will use the folder name if a name is NOT provided.
