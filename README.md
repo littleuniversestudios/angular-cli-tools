@@ -1,4 +1,4 @@
-Command Line Interface tools when generating new Angular 2 projects OR for use with your existing Angular 2 project. 
+Command Line Interface tools when generating a new Angular 2 project OR for use with your existing Angular 2 project. 
 
 ##Install 
 
@@ -22,19 +22,19 @@ New projects created with Angular CLI Tools use a webpack seed from: [https://gi
  
 To create a basic (vanilla) Angular 2 project:
 ```bash
-ngt new PROJECT_NAME
+ngt new PROJECT-NAME
 ```
 
 You can also create a Bootstrap (version 4) seed:
   
 ```bash
-ngt new PROJECT_NAME --bootstrap
+ngt new PROJECT-NAME --bootstrap
 ```
 
 Likewise, an Angular Material seed can be created by:
 
 ```bash
-ngt new PROJECT_NAME --material
+ngt new PROJECT-NAME --material
 ```
 
 ## Use with existing project
