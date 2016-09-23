@@ -35,7 +35,7 @@ var helpers = {
 	},
 
 	containsString : function (string, search) {
-		return string.indexOf(search) != -1
+		return string.lastIndexOf(search) != -1
 	}
 };
 
