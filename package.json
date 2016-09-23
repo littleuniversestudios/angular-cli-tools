@@ -1,6 +1,6 @@
 {
   "name": "angular-cli-tools",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Command Line Interface tools for using with existing Angular 2 projects.",
   "main": "index.js",
   "bin": {
@@ -22,13 +22,13 @@
     "url": "https://github.com/littleuniversestudios/angular-cli-tools/issues"
   },
   "keywords": [
-     "angular",
-     "angular 2",
-     "angular-cli",
-     "cli",
-     "command line interface",
-     "scaffold",
-     "blueprint"
-   ],
+    "angular",
+    "angular 2",
+    "angular-cli",
+    "cli",
+    "command line interface",
+    "scaffold",
+    "blueprint"
+  ],
   "homepage": "https://github.com/littleuniversestudios/angular-cli-tools#readme"
 }
