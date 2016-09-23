@@ -35,6 +35,8 @@ var tools = {
 
 	pascalCase : helpers.pascalCase,
 
+	containsString : helpers.containsString,
+
 	fileExists : function (path) {
 		return fs.existsSync(path);
 	},
