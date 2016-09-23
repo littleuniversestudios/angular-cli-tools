@@ -6,7 +6,11 @@
   "bin": {
     "ngt": "index.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "find-node-modules": "1.0.3",
+    "mkdirp": "^0.5.1",
+    "ncp": "^2.0.0"
+  },
   "devDependencies": {},
   "repository": {
     "type": "git",
@@ -17,5 +21,14 @@
   "bugs": {
     "url": "https://github.com/littleuniversestudios/angular-cli-tools/issues"
   },
+  "keywords": [
+     "angular",
+     "angular 2",
+     "angular-cli",
+     "cli",
+     "command line interface",
+     "scaffold",
+     "blueprint"
+   ],
   "homepage": "https://github.com/littleuniversestudios/angular-cli-tools#readme"
 }

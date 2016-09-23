@@ -1,5 +1,0 @@
-@Directive({ selector: '[$name$]' })
-class $PascalCaseName$ {
-  constructor() {
-  }
-}

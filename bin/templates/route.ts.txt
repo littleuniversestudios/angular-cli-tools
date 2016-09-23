@@ -1,0 +1,19 @@
+import { ModuleWithProviders }  from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+//Example: import { TestComponent }      from './test.component';
+
+const $camelCaseName$Routes: Routes = [
+  {
+  	/*Example
+    path: 'TestComponent',
+    component: TestComponent
+    */
+  }
+];
+
+export const appRoutingProviders: any[] = [
+
+];
+
+export const routing: ModuleWithProviders = RouterModule.forRoot($camelCaseName$Routes);

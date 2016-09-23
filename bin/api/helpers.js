@@ -1,5 +1,3 @@
-var tools = require('./tools');
-
 var helpers = {
 	getPlatform : function () {
 		return process.platform;
@@ -32,8 +30,9 @@ var helpers = {
 		}).join('');
 
 	},
-
-	allowRelativePaths : false
+	capitalize : function (string) {
+		return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+	}
 };
 
 module.exports = helpers;
