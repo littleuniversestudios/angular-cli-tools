@@ -32,7 +32,7 @@ var indexBlueprint = {
 				if (tools.isDirectory(destinationDirectory + '/' + fileName)) {
 					//is it a folder
 					indexFileContents += "export * from './" + fileName + "';\n"
-				} else if (tools.getFileExtension(fileName) == 'ts') {
+				} else if (tools.getFileExtension(fileName) == 'ts' && !tools.containsString(fileName, 'spec')) {
 					//is it a .ts file
 					indexFileContents += "export * from './" + tools.getFileName(fileName) + "';\n"
 				}
