@@ -1,34 +1,35 @@
 {
-  "name": "angular-cli-tools",
-  "version": "1.2.0",
-  "description": "Command Line Interface tools for using with existing Angular 2 projects.",
-  "main": "index.js",
-  "bin": {
-    "ngt": "index.js"
-  },
-  "dependencies": {
-    "find-node-modules": "1.0.3",
-    "mkdirp": "^0.5.1",
-    "ncp": "^2.0.0"
-  },
-  "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/littleuniversestudios/angular-cli-tools.git"
-  },
-  "author": "Little Universe Studios <mark@littleuniversestudios.com> (http://littleuniversestudios.com)",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/littleuniversestudios/angular-cli-tools/issues"
-  },
-  "keywords": [
-    "angular",
-    "angular 2",
-    "angular-cli",
-    "cli",
-    "command line interface",
-    "scaffold",
-    "blueprint"
-  ],
-  "homepage": "https://github.com/littleuniversestudios/angular-cli-tools#readme"
+    "name": "angular-cli-tools",
+    "version": "1.2.0",
+    "description": "Command Line Interface tools for using with existing Angular 2 projects.",
+    "main": "index.js",
+    "bin": {
+        "ngt": "index.js"
+    },
+    "dependencies": {
+        "download-github-repo": "0.1.3",
+        "find-node-modules": "1.0.3",
+        "mkdirp": "^0.5.1",
+        "ncp": "^2.0.0"
+    },
+    "devDependencies": {},
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/littleuniversestudios/angular-cli-tools.git"
+    },
+    "author": "Little Universe Studios <mark@littleuniversestudios.com> (http://littleuniversestudios.com)",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/littleuniversestudios/angular-cli-tools/issues"
+    },
+    "keywords": [
+        "angular",
+        "angular 2",
+        "angular-cli",
+        "cli",
+        "command line interface",
+        "scaffold",
+        "blueprint"
+    ],
+    "homepage": "https://github.com/littleuniversestudios/angular-cli-tools#readme"
 }
