@@ -17,9 +17,9 @@ var createCommands = {
 				project.create('material', pathData.destinationDirectory);
 				break;
 			//experimental
-			// case '--url':
-			// 	project.createFromURL(tools.getvFlagPayload(vFlags[0]), pathData.destinationDirectory);
-			// 	break;
+			case '--url':
+                project.createFromURL(tools.getvFlagPayload(vFlags[0]), pathData.destinationDirectory);
+                break;
 			default:
 				project.create('basic', pathData.destinationDirectory);
 				break;
