@@ -193,7 +193,7 @@ Note: `[NAME] optional` means that if the NAME parameter is not provided, [Angul
 
 
 ##Changelog
-v1.1.2 - [Use any seeds from github.com to start a project](#from-github)
+v1.2.0 - [Use any seeds from github.com to start a project](#from-github)
 v1.1.1 - Do not add spec files to barrels
 v1.1.0 - [Create project from scratch (basic|bootstrap|material project seeds)](#create-a-new-project)
 v1.0.6 - bug fixes
