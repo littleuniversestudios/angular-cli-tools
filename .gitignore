@@ -1,4 +1,5 @@
 node_modules
 dist
+angular-cli-tools
 .idea
 npm-debug.log

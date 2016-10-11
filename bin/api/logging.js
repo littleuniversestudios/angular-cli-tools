@@ -3,6 +3,9 @@ var logging = {
 	logSuccess : function (message) {
 		console.log(logging.yellowColor(message));
 	},
+	logInfo: function (message) {
+		console.log(logging.cyanColor(message));
+	},
 	logError : function (message) {
 		console.log(logging.redColor(message));
 	},

@@ -1,16 +1,16 @@
 #! /usr/bin/env node
-var config = require('../config');
+var cliConfig = require('../cli-config');
 var tools = require('../api/tools');
-var blueprint = require('../commands/generate/blueprint');
+var blueprintMetadataModule = require('../commands/generate/blueprint-metadata');
 var indexBlueprint = require('../commands/generate/index');
 
 var updateCommands = {
 	updateComponent : function (blueprintType, blueprintName, vFlags) {
-		blueprintType = config.command.shorthand.components[blueprintType] || blueprintType; //if blueprint comes in shorthand form
+		blueprintType = cliConfig.command.shorthand.components[blueprintType] || blueprintType; //if blueprint comes in shorthand form
 		switch (blueprintType) {
 			case 'index':
 				blueprintName = tools.pathEndsWithSlash(blueprintName) ? blueprintName : blueprintName + '/';
-				var indexData = blueprint.extractNameData(blueprintName);
+				var indexData = blueprintMetadataModule.extractNameData(blueprintName);
 				if (tools.isvFlagPresent(vFlags, '--recursive')) {
 					var updatedFiles = indexBlueprint.updateRecursive(indexData.destinationDirectory, []);
 					tools.logSuccess('Updated: \n' +  updatedFiles.map(function (path) {

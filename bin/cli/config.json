@@ -1,0 +1,9 @@
+{
+    "templateMap": {
+        "card": {
+            "component": "./templates/custom/card/component.ts",
+            "html": "./templates/custom/card/component.html",
+            "style": "./templates/custom/card/component.scss"
+        }
+    }
+}

@@ -18,7 +18,7 @@ var createCommands = {
 				break;
 			//experimental
 			case '--url':
-                project.createFromURL(tools.getvFlagPayload(vFlags[0]), pathData.destinationDirectory);
+                project.createFromURL(tools.getvFlagPayload(vFlags,'--url'), pathData.destinationDirectory);
                 break;
 			default:
 				project.create('basic', pathData.destinationDirectory);

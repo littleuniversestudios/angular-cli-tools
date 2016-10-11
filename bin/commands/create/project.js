@@ -1,5 +1,5 @@
 var tools = require('../../api/tools');
-var config = require('../../config');
+var cliConfig = require('../../cli-config');
 var ncp = require('ncp').ncp;
 var mkdirp = require('mkdirp');
 const download = require('download-github-repo'); //experimental
@@ -111,7 +111,7 @@ var projectModule = {
             if (err) throw err;
 
             //then copy templates to './angular-cli-tools/templates'
-            var templatesDirectory = config.appRoot + config.templates.root;
+            var templatesDirectory = cliConfig.appRoot + cliConfig.templates.root;
             ncp(templatesDirectory, localTemplatesDirectory, function (err) {
                 if (err) throw err;
 
@@ -134,7 +134,7 @@ var projectModule = {
 
 
         // get the location of the seed project
-        var seedDirectory = config.appRoot + config.seeds.root + config.seeds.basic.root;
+        var seedDirectory = cliConfig.appRoot + cliConfig.seeds.root + cliConfig.seeds.basic.root;
 
         // copy the seed project
         ncp(seedDirectory, targetInstallDirectory, function (err) {
@@ -144,7 +144,7 @@ var projectModule = {
             // copy the angular-cli-tools templates so user can edit/customize templates locally
             projectModule.copyCLIToolsToProject(targetInstallDirectory, function () {
 
-                //add angular-cli-tools folder to .gitignore file //TODO: clean this up.... maybe have a default object in config because url seeds are neither basic/boot/material
+                //add angular-cli-tools folder to .gitignore file //TODO: clean this up.... maybe have a default object in cliConfig because url seeds are neither basic/boot/material
                 projectModule.appendGitIgnoreFile(seedType, targetInstallDirectory);
 
                 // add seed dependencies and devDependencies in package.json
@@ -159,7 +159,7 @@ var projectModule = {
 
                     // if any other seed than the 'basic' seed, overwrite 'src' directory using selected seed's src (bootstrap|material)
                     if (seedType != 'basic') {
-                        ncp(config.appRoot + config.seeds.root + config.seeds[seedType].srcFolder, targetInstallDirectory + '/src', {clobber : true}, function (err) {
+                        ncp(cliConfig.appRoot + cliConfig.seeds.root + cliConfig.seeds[seedType].srcFolder, targetInstallDirectory + '/src', {clobber : true}, function (err) {
                             if (err) throw err;
                             projectModule.displaySuccessMessage(seedType, targetInstallDirectory, '8080');
                         });
@@ -213,8 +213,8 @@ var projectModule = {
     getGitIgnoreFileAdditions : function (seedType) {
         seedType = seedType || 'basic';
         var gitIgnoreAddition = '\n';
-        var basicGitIgnoreAdditions = config.seeds['basic'].gitignore || [];
-        var seedGitIgnoreAdditions = config.seeds[seedType].gitignore || [];
+        var basicGitIgnoreAdditions = cliConfig.seeds['basic'].gitignore || [];
+        var seedGitIgnoreAdditions = cliConfig.seeds[seedType].gitignore || [];
 
         basicGitIgnoreAdditions.forEach(function (addition) {
             gitIgnoreAddition += addition + '\n';
@@ -229,8 +229,8 @@ var projectModule = {
     },
 
     addDependencies : function (packageFile, seedType) {
-        var listOfDependencies = config.seeds[seedType].dependencies || {};
-        var listOfDevDependencies = config.seeds[seedType].devDependencies || {};
+        var listOfDependencies = cliConfig.seeds[seedType].dependencies || {};
+        var listOfDevDependencies = cliConfig.seeds[seedType].devDependencies || {};
 
         for (var dependencyName in listOfDependencies) {
             if (listOfDependencies.hasOwnProperty(dependencyName)) {
