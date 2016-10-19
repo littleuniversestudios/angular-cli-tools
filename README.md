@@ -192,23 +192,22 @@ In the `angular-cli-tools` folder at the root of your project, there is a `confi
 
 `file-type` is an identifier telling angular-cli-tools which file to use when generating a custom component
 
-
- | File Type   | Blueprint |
- |:-------------|:-------|
- | class    | class.ts|
- | component    | component.ts|
- | style    | component.scss or .css|
- | html    | component.html|
- | directive    | directive.ts|
- | enum    | enum.ts|
- | index    | index.ts|
- | interface    | interface.ts|
- | lazy-load-module    | lazy-load-module.ts|
- | lazy-load-routing    | lazy-load-routing.ts|
- | module    | module.ts|
- | pipe    | pipe.ts|
- | routing    | routing.ts|
- | service    | service.ts|
+| File Type   | Blueprint |
+|:-------------|:-------|
+| class    | class.ts|
+| component    | component.ts|
+| style    | component.scss or .css|
+| html    | component.html|
+| directive    | directive.ts|
+| enum    | enum.ts|
+| index    | index.ts|
+| interface    | interface.ts|
+| lazy-load-module    | lazy-load-module.ts|
+| lazy-load-routing    | lazy-load-routing.ts|
+| module    | module.ts|
+| pipe    | pipe.ts|
+| routing    | routing.ts|
+| service    | service.ts|
 
 
 #### Example Usage
