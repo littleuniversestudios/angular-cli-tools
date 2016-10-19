@@ -15,7 +15,7 @@ CLI commands for new OR existing Angular 2 projects.
 #### Advanced Usage
 * [Edit templates](#edit-blueprint-templates)
 * [Custom templates](#custom-templates)
-* [Save templates](#save-templates-(v1.4.0+))
+* [Save templates](#save-templates-v140)
 * [Generate and Update barrels (index.ts files)](#update-index.ts-files) [ [recursively] ](#update-index.ts-files-recursively)
 
 #### Supporting documentation
@@ -353,7 +353,7 @@ Note: `[NAME] optional` means that if the NAME parameter is not provided, [Angul
 
 
 ## Changelog
-* v1.4.0 - [Save Templates](#save-templates-(v1.4.0+))
+* v1.4.0 - [Save Templates](#save-templates-v140)
 * v1.3.0 - [New Components](#all-available-blueprints): `html` `style`, [Lazy Loaded Routes](#route-blueprint), [Custom Templates](#custom-templates)
 * v1.2.0 - [Use any seeds from github.com to start a project](#from-github)
 * v1.1.1 - Do not add spec files to barrels
