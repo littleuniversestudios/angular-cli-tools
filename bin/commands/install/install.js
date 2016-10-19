@@ -6,18 +6,18 @@ var mkdirp = require('mkdirp');
 var merge = require('merge');
 
 
-var install = {
+var installModule = {
     localTemplates : function (vFlags) {
 
-        //find the project's node_modules folder
-        var nodeModulesPath = tools.getNodeModulesPath();
-        if (nodeModulesPath) {
-            var localTemplatesDirectory = path.resolve(nodeModulesPath, cliConfig.user.templates.location);
+        //find the project's root folder
+        var projectRootPath = tools.getProjectRootFolder();
+        if (projectRootPath) {
+            var localTemplatesDirectory = path.resolve(projectRootPath, cliConfig.user.templates.location);
 
             //check if local templates already exist
             if (tools.fileExists(localTemplatesDirectory)) {
                 if (tools.isvFlagPresent(vFlags, '--force')) {
-                    install.copyLocalTemplates(localTemplatesDirectory);
+                    installModule.copyLocalTemplates(localTemplatesDirectory);
                 } else {
                     tools.throwError(
                         'Local templates already exist in directory: ' + tools.logColorYellow(localTemplatesDirectory) +
@@ -31,7 +31,7 @@ var install = {
                 }
 
             } else {
-                install.copyLocalTemplates(localTemplatesDirectory);
+                installModule.copyLocalTemplates(localTemplatesDirectory);
             }
         } else {
             tools.throwError('Could not find project\'s node_modules folder. Make sure the node_modules folder is present at the root of your project where local templates will be installed.');
@@ -39,6 +39,7 @@ var install = {
     },
     copyLocalTemplates : function (localTemplatesDirectory, callback) {
         callback = callback || tools.emptyFunction();
+
         //first make the './angular-cli-tools/templates' directory
         mkdirp(localTemplatesDirectory, function (err) {
             if (err) throw err;
@@ -55,12 +56,26 @@ var install = {
             })
         })
     },
+
+    createRootFolder : function (callback) {
+        callback = callback || tools.emptyFunction();
+
+        //find the project's root folder
+        var projectRootPath = tools.getProjectRootFolder();
+
+        //create the root folder
+        mkdirp(path.resolve(projectRootPath, cliConfig.user.localAngularCLITools.location), function (err) {
+            if (err) throw err;
+            callback()
+        })
+    },
+
     localConfig : function () {
 
         //find the project's node_modules folder
-        var nodeModulesPath = tools.getNodeModulesPath();
-        if (nodeModulesPath) {
-            var localConfigFilePath = path.resolve(nodeModulesPath, cliConfig.user.config.location);
+        var projectRootPath = tools.getProjectRootFolder();
+        if (projectRootPath) {
+            var localConfigFilePath = path.resolve(projectRootPath, cliConfig.user.config.location);
 
             //check if local templates already exist
             if (tools.fileExists(localConfigFilePath)) {
@@ -73,7 +88,9 @@ var install = {
                 );
 
             } else {
-                install.copyLocalConfig(localConfigFilePath);
+                installModule.createRootFolder(function () {
+                    installModule.copyLocalConfig(localConfigFilePath);
+                });
             }
         } else {
             tools.throwError('Could not find project\'s node_modules folder. Make sure the node_modules folder is present at the root of your project where local templates will be installed.');
@@ -93,5 +110,5 @@ var install = {
         })
     },
 };
-module.exports = install;
+module.exports = installModule;
 

@@ -71,18 +71,21 @@ var config = {
         //location gets resolved by finding the projects 'node_modules' folder
         // then using that path resolve 'angular-cli-tools' folder hence the '../'
         localAngularCLITools : {
-            location : '../angular-cli-tools/'
+            location : './angular-cli-tools/'
         },
         templates : {
-            location : '../angular-cli-tools/templates/'
+            location : './angular-cli-tools/templates/'
+        },
+        savedComponents : {
+            location : './templates/saved'
         },
         config : {
-            location : '../angular-cli-tools/config.json'
+            location : './angular-cli-tools/config.json'
         }
     },
     component : {
         barrels : {
-            "addFolders" : true
+            "addFolders" : false
         }
     },
     seeds : {
@@ -128,6 +131,7 @@ var config = {
                 'i' : 'install',
                 'h' : 'help',
                 'u' : 'update',
+                's' : 'save',
                 'v' : 'version'
             },
             install : {

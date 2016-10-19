@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 var tools = require('../api/tools');
 var helpCommands = require('../commands/help/help');
-var install = require('../commands/install/install');
+var installModule = require('../commands/install/install');
 
 var installCommands = {
     install : function (fileType, vFlags) {
@@ -9,11 +9,15 @@ var installCommands = {
 
         switch (fileType) {
             case 'templates':
-                install.localTemplates(vFlags);
-                install.localConfig(vFlags);
+                installModule.createRootFolder(function () {
+                    installModule.localTemplates(vFlags);
+                    installModule.localConfig(vFlags);
+                });
                 break;
             case 'config':
-                install.localConfig(vFlags);
+                installModule.createRootFolder(function () {
+                    installModule.localConfig(vFlags);
+                });
                 break;
             default:
                 tools.logError('Install command: ' + fileType + ' not found. See help file for usage:');

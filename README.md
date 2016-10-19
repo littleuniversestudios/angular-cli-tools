@@ -1,4 +1,4 @@
-CLI commands for generating new Angular 2 projects OR for use with existing Angular 2 projects.
+CLI commands for new OR existing Angular 2 projects.
 
 ## Install
 
@@ -6,13 +6,19 @@ CLI commands for generating new Angular 2 projects OR for use with existing Angu
 
 ## Table of contents
 
+#### Basics
 * [Create a new project: ](#create-a-new-project) [basic](#basic-project) | [bootstrap](#bootstrap-project) | [angular material](#angular-material-project) | [from GitHub](#from-github)
 * [Use Angular CLI Tools with an existing project](#use-with-existing-project)
 * [Generate Components, Modules, Services, Pipes ...](#generating-components)
 * [All Blueprints / Scaffolds](#all-available-blueprints)
-* [Generate and Update barrels (index.ts files)](#update-index.ts-files) [ [recursively] ](#update-index.ts-files-recursively)
+
+#### Advanced Usage
 * [Edit templates](#edit-blueprint-templates)
 * [Custom templates](#custom-templates)
+* [Save templates](#save-templates-(v1.4.0+))
+* [Generate and Update barrels (index.ts files)](#update-index.ts-files) [ [recursively] ](#update-index.ts-files-recursively)
+
+#### Supporting documentation
 * [Shortcuts](#shortcuts)
 * [Changelog](#changelog)
 * [Credits](#credits)
@@ -186,11 +192,12 @@ In the `angular-cli-tools` folder at the root of your project, there is a `confi
 
 `file-type` is an identifier telling angular-cli-tools which file to use when generating a custom component
 
- | File Type   | Blueprint|
- |:------------- |:-------|
+
+ | File Type   | Blueprint |
+ |:-------------|:-------|
  | class    | class.ts|
  | component    | component.ts|
- | style    | component.scss\css|
+ | style    | component.scss or .css|
  | html    | component.html|
  | directive    | directive.ts|
  | enum    | enum.ts|
@@ -202,6 +209,7 @@ In the `angular-cli-tools` folder at the root of your project, there is a `confi
  | pipe    | pipe.ts|
  | routing    | routing.ts|
  | service    | service.ts|
+
 
 #### Example Usage
 
@@ -233,6 +241,53 @@ The `--template:template-name` flag (or shorthand `-t:template-name`) tells angu
 
 Angular CLI Tools comes with some custom components out of the box and can be found in the `angular-cli-tools/components/custom` folder found at the root of your project.
 
+## Save Templates (v1.4.0+)
+
+You can easily turn an existing component (or service, module, pipe...) into a re-usable template with the following command:
+
+`ngt save`
+
+Above command will save everything in the current working directory as a template and use the `folder name` as the `template name`
+
+As an example pretend there is a `login-form` component in directory:
+
+`../src/app/login-form`
+
+By executing the `ngt save` command in that directory, a template called `login-form` will be created in `angular-cli-tools/templates/saved/login-form`
+
+To use this template (to generate a component elsewhere in the project) provide the `template name` when using the generate command:
+
+`ngt generate component some-other-form -template:login-form`
+
+or shorthand:
+
+`ngt g c some-other-form -t:login-form`
+
+When saving templates you can also provide a custom `template name` as such:
+
+`ngt save -template:custom-template-name`
+
+or shorthand:
+
+`ngt s -t:custom-template-name`
+
+where `custom-template-name` is the name you provide.
+
+This command is great for re-using similar components throughout the application that start off the same and then get customized as the requirements grow. Common uses are form components. You can easily create a basic ng2 form with standard validation, turn it into a template then stamp out forms where needed in the app. The forms created from the template can then be customized per requirement but they'll all start from the same base form that was used to generate the template.
+
+### Advanced Usage
+
+you can also specify which type of component to save by providing the component filename directly:
+
+`ngt save ./login-form.module.ts -template:form-module`
+
+This will in turn only save the `module` component as a template without saving the rest of the files in the folder.
+
+Then, to generate a module from the `form-module` template:
+
+`ngt generate module -t:form-module`
+
+
 ## Update index.ts files
 Angular CLI Tools has commands to generate and update index.ts files (barrels) to rollup exports from several modules into a single convenience module.
 
@@ -259,9 +314,7 @@ This will update the `index.ts` file in the current folder plus any other sub-fo
 ## Edit Blueprint Templates
 #### If you already started with a [Angular CLI Tools seed](#create-a-new-project):
 
-  You're done. Nothing more to do!
-
-  You'll notice a `angular-cli-tools/templates` folder at the root of your project directory. Inside you'll find all the component blueprints. When generating components, Angular CLI Tools will use the template in that folder first before defaulting to it's own template file. Feel free to edit the local template files to match your project's needs.
+  You'll notice a `angular-cli-tools/templates` folder at the root of your project directory. Inside you'll find all the component blueprints. When generating components, Angular CLI Tools will use the template in that folder first before defaulting to it's own template file. Feel free to edit the local template files in the `angular-cli-tools/templates` folder to match your project's needs.
 
 #### If you have an existing project, [install the local templates](#install-local-templates):
 
@@ -271,7 +324,7 @@ This will update the `index.ts` file in the current folder plus any other sub-fo
 ngt install templates
 ```
 
-This will install the `angular-cli-tools\templates` folder at the root of your project at which point you can edit  and customize the local templates.
+This will install the `angular-cli-tools\templates` folder at the root of your project at which point you can edit  and customize the local templates found in the `angular-cli-tools/templates` folder.
 
 
 ## Shortcuts
@@ -301,6 +354,7 @@ Note: `[NAME] optional` means that if the NAME parameter is not provided, [Angul
 
 
 ## Changelog
+* v1.4.0 - [Save Templates](#save-templates-(v1.4.0+))
 * v1.3.0 - [New Components](#all-available-blueprints): `html` `style`, [Lazy Loaded Routes](#route-blueprint), [Custom Templates](#custom-templates)
 * v1.2.0 - [Use any seeds from github.com to start a project](#from-github)
 * v1.1.1 - Do not add spec files to barrels

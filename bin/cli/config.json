@@ -1,4 +1,9 @@
 {
+    "commands": {
+        "save": {
+            "rootDirectory": "./templates/saved"
+        }
+    },
     "templateMap": {
         "card": {
             "component": "./templates/custom/card/component.ts",

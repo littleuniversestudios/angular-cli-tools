@@ -8,6 +8,7 @@ var generateCommands = require('./generate-commands');
 var updateCommands = require('./update-commands');
 var createCommands = require('./create-commands');
 var installCommands = require('./install-commands');
+var saveCommandModule = require('./save-commands');
 
 var mainCommands = {
 	run : function (mainCommand, restOfCommands, vFlags) {
@@ -30,6 +31,10 @@ var mainCommands = {
 			case 'install':
 				var fileType = cliConfig.command.shorthand.install[restOfCommands[0]] || restOfCommands[0];
 				installCommands.install(fileType, vFlags);
+				break;
+			case 'save':
+                var componentFolder = restOfCommands[0] || './';
+                saveCommandModule.saveComponent(componentFolder, vFlags);
 				break;
 			case 'help':
 				process.stdout.write(helpCommands.default());

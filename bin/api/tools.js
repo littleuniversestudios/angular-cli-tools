@@ -38,6 +38,8 @@ var tools = {
 
     containsString : helpers.containsString,
 
+    objectHasNestedProperty : helpers.objectHasNestedProperty,
+
     fileExists : function (path) {
         return fs.existsSync(path);
     },
@@ -67,6 +69,19 @@ var tools = {
     makeDirSync : function (path) {
         return fs.mkdirSync(path);
     },
+
+    getFileNameFromPath : function (filePath) {
+        return tools.getLastDirectoryName(filePath);
+    },
+
+    getLastDirectoryName : function (filePath) {
+        return filePath.split(path.sep).reverse()[0];
+    },
+
+    addSlashToPath : function (path) {
+        return tools.pathEndsWithSlash(path) ? path : path + '/';
+    },
+
     pathEndsWithSlash : function (path) {
         path = path || '';
         var lastChar = path.charAt(path.length - 1);
@@ -76,6 +91,10 @@ var tools = {
     //returns either the absolute path to the project's node_module file or undefined if not found;
     getNodeModulesPath : function () {
         return findNodeModules({relative : false})[0];
+    },
+
+    getProjectRootFolder : function () {
+        return path.resolve(findNodeModules({relative : false})[0], '../');
     },
 
     /*
@@ -90,7 +109,7 @@ var tools = {
 
     log : logging.log,
     logSuccess : logging.logSuccess,
-    logInfo: logging.logInfo,
+    logInfo : logging.logInfo,
     logError : logging.logError,
     logColorYellow : logging.yellowColor,
     logColorRed : logging.redColor,
@@ -128,19 +147,18 @@ var tools = {
         return fileNameWithExtension.substr(0, fileNameWithExtension.lastIndexOf('.'))
     },
 
-    getRelativePathFromProjectRoot : function (fullPath, nodeModulesPath, prefix) {
-        nodeModulesPath = nodeModulesPath || tools.getNodeModulesPath();
+    getRelativePathFromProjectRoot : function (fullPath, projectRootPath, prefix) {
+        projectRootPath = projectRootPath || tools.getProjectRootFolder();
         prefix = prefix || '';
-        if (nodeModulesPath.indexOf('node_modules') >= 0) {
-            nodeModulesPath = path.resolve(nodeModulesPath, '../');
-        }
         var relativePath = '';
-        if (fullPath.indexOf(nodeModulesPath) === 0) {
-            relativePath = prefix + fullPath.substring(nodeModulesPath.length + 1).replace(/\\/g, "/");
+        if (fullPath.indexOf(projectRootPath) === 0) {
+            relativePath = prefix + fullPath.substring(projectRootPath.length + 1).replace(/\\/g, "/");
         }
         return relativePath;
+    },
 
-
+    replacePathSlashes : function (path) {
+        return path.replace(/\\/g, "/");
     },
 
     isvFlagPresent : vFlagModule.isvFlagPresent,

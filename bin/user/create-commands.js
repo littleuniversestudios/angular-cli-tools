@@ -1,13 +1,13 @@
 #! /usr/bin/env node
 var tools = require('../api/tools');
-var blueprint = require('../commands/generate/blueprint');
+var blueprintMetadataModule = require('../commands/generate/blueprint-metadata');
 var project = require('../commands/create/project');
 
 var createCommands = {
 	newProject : function (projectDestination, vFlags) {
 		vFlags = vFlags || [];
 		projectDestination = tools.pathEndsWithSlash(projectDestination) ? projectDestination : projectDestination + '/';
-		var pathData = blueprint.extractNameData(projectDestination);
+		var pathData = blueprintMetadataModule.extractNameData(projectDestination);
 		var vFlagIdentifier = tools.getvFlagIdentifier(vFlags[0]);
 		switch (vFlagIdentifier) {
 			case '--bootstrap':
@@ -18,7 +18,7 @@ var createCommands = {
 				break;
 			//experimental
 			case '--url':
-                project.createFromURL(tools.getvFlagPayload(vFlags,'--url'), pathData.destinationDirectory);
+                project.createFromURL(tools.getvFlagPayload(tools.getvFlag(vFlags,'--url')), pathData.destinationDirectory);
                 break;
 			default:
 				project.create('basic', pathData.destinationDirectory);

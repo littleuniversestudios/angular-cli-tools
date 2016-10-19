@@ -33,19 +33,29 @@ var blueprintMetadataModule = {
         var userTemplate = tools.getvFlagPayload(tools.getvFlag(vFlags, '--template'));
         var cliConfigBlueprintFiles = cliConfig.templates.map[blueprintType];
         var cliConfigGeneratedFileNames = cliConfig.templates.names;
-        var nodeModulesPath = tools.getNodeModulesPath();
-        var userBlueprintFiles = userConfigModule.getUserTemplateFilesMap(userTemplate, nodeModulesPath);
+        var projectRootPath = tools.getProjectRootFolder();
+        var userBlueprintFiles = userConfigModule.getUserTemplateFilesMap(userTemplate, projectRootPath);
         var styleType = blueprintMetadataModule.determineStyleType(vFlags);
         var blueprintFiles = [];
 
+
+        //default to angular-cli-tools list of files for a specific component
+        var blueprintFileList = cliConfigBlueprintFiles;
+
+        // if a user has provided a template and type to be generated is a complex one [component,route] use
+        // the list of files in the user's template
+        if (userTemplate && ['component', 'route'].indexOf(blueprintType) >= 0) {
+            blueprintFileList = userBlueprintFiles;
+        }
+
         // override the CLI blueprint files with files specified by user
-        for (var blueprintFileType in cliConfigBlueprintFiles) {
+        for (var blueprintFileType in blueprintFileList) {
             var fileMetadata = null;
 
-            //1. Try getting the file from templateMap in user's angular-cli-config file
+            //1. Try getting the file from templateMap in user's config.json file
 
             if (userBlueprintFiles && userBlueprintFiles[blueprintFileType]) {
-                fileMetadata = userConfigModule.getAbsolutePathToUserBlueprintFile(userBlueprintFiles[blueprintFileType], nodeModulesPath);
+                fileMetadata = userConfigModule.getAbsolutePathToUserBlueprintFile(userBlueprintFiles[blueprintFileType], projectRootPath);
             }
 
             //1b. Style file is different in that it can have a different extension (css|scss|less?) so we need to pull the right template
@@ -59,7 +69,7 @@ var blueprintMetadataModule = {
 
             //2. Try getting the file from local user templates in [project-root]/angular-cli-tools/templates/[file-name]
             if (!fileMetadata) {
-                fileMetadata = blueprintMetadataModule.getAbsolutePathToLocalBlueprintFile(templateFileName, nodeModulesPath);
+                fileMetadata = blueprintMetadataModule.getAbsolutePathToLocalBlueprintFile(templateFileName, projectRootPath);
             }
 
             //3. Lastly, if above fails get the default file from angular-cli-tools/bin/cli/templates (global installation)
@@ -105,7 +115,7 @@ var blueprintMetadataModule = {
 
     determineStyleFile : function (templateFileName, styleExtension) {
         var fileParts = templateFileName.split('.');
-        fileParts[fileParts.length-1]=styleExtension
+        fileParts[fileParts.length - 1] = styleExtension;
         return fileParts.join('.');
     },
 
@@ -148,14 +158,14 @@ var blueprintMetadataModule = {
         return nameData;
     },
 
-    getAbsolutePathToLocalBlueprintFile : function (templateFileName, nodeModulesPath) {
-        nodeModulesPath = nodeModulesPath || tools.getNodeModulesPath();
-        var localTemplateLocation = path.resolve(nodeModulesPath, cliConfig.user.templates.location + templateFileName);
+    getAbsolutePathToLocalBlueprintFile : function (templateFileName, projectRootPath) {
+        projectRootPath = projectRootPath || tools.getProjectRootFolder();
+        var localTemplateLocation = path.resolve(projectRootPath, cliConfig.user.templates.location + templateFileName);
 
 
         var fileMetadata = {
             location : localTemplateLocation,
-            label : tools.getRelativePathFromProjectRoot(localTemplateLocation, nodeModulesPath, '[project-root]/'),
+            label : tools.getRelativePathFromProjectRoot(localTemplateLocation, projectRootPath, '[project-root]/'),
             origin : 'local'
         };
         if (!tools.fileExists(localTemplateLocation)) {
