@@ -88,6 +88,13 @@ var blueprintMetadataModule = {
             fileMetadata.variables = templateData.templateVariables;
             fileMetadata.userDefinedValues = templateData.userDefinedValues;
 
+            //store name formats for displaying usage info after generation
+            fileMetadata.componentName = {
+                original : nameMetadata.name,
+                camelCase : tools.camelCase(nameMetadata.name),
+                pascalCase : tools.pascalCase(nameMetadata.name)
+            };
+
             // style file is a little bit different in that it could have different
             // file type ending .css / .scss so we check for it
 

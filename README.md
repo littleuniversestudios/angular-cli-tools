@@ -353,6 +353,7 @@ Note: `[NAME] optional` means that if the NAME parameter is not provided, [Angul
 
 
 ## Changelog
+* v1.4.1 - updated project seeds to: webpack 2, angular 2.1, router 3.1, angular2-router-loader
 * v1.4.0 - [Save Templates](#save-templates-v140)
 * v1.3.0 - [New Components](#all-available-blueprints): `html` `style`, [Lazy Loaded Routes](#route-blueprint), [Custom Templates](#custom-templates)
 * v1.2.0 - [Use any seeds from github.com to start a project](#from-github)

@@ -94,7 +94,7 @@ var config = {
             root : '/basic',
             dependencies : {},
             devDependencies : {
-                "angular2-router-loader" : "^0.2.2"
+                "angular2-router-loader" : ""
             },
             gitignore : [
                 '# Angular-cli-Tools #',
