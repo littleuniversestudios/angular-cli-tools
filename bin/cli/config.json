@@ -9,6 +9,12 @@
             "component": "./templates/custom/card/component.ts",
             "html": "./templates/custom/card/component.html",
             "style": "./templates/custom/card/component.scss"
+        },
+        "with-module": {
+            "html": "./templates/custom/component-with-module/component.html",
+            "style": "./templates/custom/component-with-module/component.scss",
+            "component": "./templates/custom/component-with-module/component.ts",
+            "module": "./templates/custom/component-with-module/module.ts"
         }
     }
 }

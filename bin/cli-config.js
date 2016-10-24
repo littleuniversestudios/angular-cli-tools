@@ -67,6 +67,9 @@ var config = {
             }
         }
     },
+    cli : {
+        root : '/cli/'
+    },
     user : {
         //location gets resolved by finding the projects 'node_modules' folder
         // then using that path resolve 'angular-cli-tools' folder hence the '../'

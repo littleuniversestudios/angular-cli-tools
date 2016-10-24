@@ -16,13 +16,6 @@ var projectModule = {
         projectModule.makeProjectDirectory(targetInstallDirectory, function () {
             projectModule.makeProject(seedType, targetInstallDirectory);
         });
-        // if (!tools.fileExists(targetInstallDirectory)) {
-        //     mkdirp(targetInstallDirectory, function (err) {
-        //         if (err) throw err;
-        //     })
-        // } else {
-        //     projectModule.makeProject(seedType, targetInstallDirectory);
-        // }
     },
 
     makeProjectDirectory : function (targetInstallDirectory, callback) {
@@ -104,14 +97,14 @@ var projectModule = {
 
     copyCLIToolsToProject : function (targetInstallDirectory, callback) {
         // copy the angular-cli-tools templates so user can edit/customize templates locally
-        var localTemplatesDirectory = targetInstallDirectory + 'angular-cli-tools/templates';
+        var localTemplatesDirectory = targetInstallDirectory + 'angular-cli-tools/';
 
         //first make the './angular-cli-tools/templates' directory
         mkdirp(localTemplatesDirectory, function (err) {
             if (err) throw err;
 
-            //then copy templates to './angular-cli-tools/templates'
-            var templatesDirectory = cliConfig.appRoot + cliConfig.templates.root;
+            //then copy templates + config.json to '[project-root]/angular-cli-tools'
+            var templatesDirectory = cliConfig.appRoot + cliConfig.cli.root;
             ncp(templatesDirectory, localTemplatesDirectory, function (err) {
                 if (err) throw err;
 

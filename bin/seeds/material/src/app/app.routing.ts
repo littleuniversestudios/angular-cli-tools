@@ -1,12 +1,11 @@
 import {RouterModule, Routes} from '@angular/router';
 
-import {HomeComponent} from './home/home.component';
-import {AboutComponent} from './about/about.component';
-import {MaterialExamplesComponent} from './material-examples/material-examples.component';
 const routes: Routes = [
-    {path: '', component: HomeComponent},
-    {path: 'about', component: AboutComponent},
-    {path: 'material-examples', component: MaterialExamplesComponent}
+  {path: 'home', loadChildren: './pages/home/home.module#HomeModule'},
+  {path: 'about', loadChildren: './pages/about/about.module#AboutModule'},
+  {path: 'material-examples', loadChildren: './pages/material-examples/material-examples.module#MaterialExamplesModule'},
+
+  {path: '', redirectTo: 'home', pathMatch: 'full'},
 ];
 
 export const routing = RouterModule.forRoot(routes);
