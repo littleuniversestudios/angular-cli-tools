@@ -53,6 +53,21 @@ var helpers = {
         }
 
         return true;
+    },
+
+    objectGetNestedProperty : function (obj, propertyPath) {
+        if (propertyPath == '')return obj;
+        var properties = propertyPath.split('.');
+        for (var i = 0; i < properties.length; i++) {
+            var prop = properties[i];
+
+            if (!obj || !obj.hasOwnProperty(prop)) {
+                return undefined;
+            } else {
+                obj = obj[prop];
+            }
+        }
+        return obj;
     }
 };
 

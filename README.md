@@ -353,6 +353,7 @@ Note: `[NAME] optional` means that if the NAME parameter is not provided, [Angul
 
 
 ## Changelog
+* v1.5.0 - added "create barrels" option to config file (user can opt out of creating/updating index.ts files when generating components)
 * v1.4.2 - updated project seeds to follow style guide structure, install config.json with new projects (bug)
 * v1.4.1 - updated project seeds to: webpack 2, angular 2.1, router 3.1, angular2-router-loader
 * v1.4.0 - [Save Templates](#save-templates-v140)

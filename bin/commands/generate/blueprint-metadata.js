@@ -5,13 +5,13 @@ var userConfigModule = require('../../user/user-config');
 var mkdirp = require('mkdirp');
 
 var blueprintMetadataModule = {
-    getBlueprints : function (blueprintType, blueprintName, vFlags) {
+    getBlueprints : function (blueprintType, blueprintName, vFlags, projectRootPath) {
 
         //1. Figure out the name and destination for the component to generate
         var nameMetadata = blueprintMetadataModule.extractNameData(blueprintName, blueprintType);
 
         //2. Get all files that are required fo this component + their metadata
-        var blueprintTemplates = blueprintMetadataModule.getBlueprintFiles(blueprintType, nameMetadata, vFlags);
+        var blueprintTemplates = blueprintMetadataModule.getBlueprintFiles(blueprintType, nameMetadata, vFlags, projectRootPath);
 
         return blueprintTemplates;
 
@@ -28,12 +28,12 @@ var blueprintMetadataModule = {
         }
     },
 
-    getBlueprintFiles : function (blueprintType, nameMetadata, vFlags) {
+    getBlueprintFiles : function (blueprintType, nameMetadata, vFlags, projectRootPath) {
 
         var userTemplate = tools.getvFlagPayload(tools.getvFlag(vFlags, '--template'));
         var cliConfigBlueprintFiles = cliConfig.templates.map[blueprintType];
         var cliConfigGeneratedFileNames = cliConfig.templates.names;
-        var projectRootPath = tools.getProjectRootFolder();
+        var projectRootPath = projectRootPath || tools.getProjectRootFolder();
         var userBlueprintFiles = userConfigModule.getUserTemplateFilesMap(userTemplate, projectRootPath);
         var styleType = blueprintMetadataModule.determineStyleType(vFlags);
         var blueprintFiles = [];

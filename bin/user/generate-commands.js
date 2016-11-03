@@ -6,6 +6,7 @@ var blueprint = require('../commands/generate/blueprint');
 var indexBlueprint = require('../commands/generate/index');
 var generalBlueprint = require('../commands/generate/blueprint');
 var blueprintMetadataModule = require('../commands/generate/blueprint-metadata');
+var userConfigModule = require('./user-config');
 
 
 var generateCommandsModule = {
@@ -15,7 +16,7 @@ var generateCommandsModule = {
         switch (blueprintType) {
             case 'index':
                 blueprintName = tools.pathEndsWithSlash(blueprintName) ? blueprintName : blueprintName + '/';
-                var indexData = blueprint.extractNameData(blueprintName);
+                var indexData = blueprintMetadataModule.extractNameData(blueprintName,'index');
                 indexBlueprint.generateCommand(indexData.destinationDirectory);
                 tools.logSuccess('Created ' + indexData.destinationDirectory + 'index.ts');
                 break;
@@ -36,10 +37,14 @@ var generateCommandsModule = {
             case 'service':
             case 'style':
                 blueprintMetadataModule.logUserTemplateUsed(vFlags);
-                var blueprints = blueprintMetadataModule.getBlueprints(blueprintType, blueprintName, vFlags);
+                var projectRootPath = tools.getProjectRootFolder();
+                var blueprints = blueprintMetadataModule.getBlueprints(blueprintType, blueprintName, vFlags, projectRootPath);
                 generalBlueprint.generateFilesFromBlueprints(blueprints, function () {
                     //use the first blueprint's destination directory to create the barrel
-                    indexBlueprint.updateCommand(blueprints[0].destinationDirectory);
+                    var createBarrels = userConfigModule.getProperty('commands.generate.createBarrels', projectRootPath);
+                    if (createBarrels === true || createBarrels === undefined) {
+                        indexBlueprint.updateCommand(blueprints[0].destinationDirectory);
+                    }
                     generateCommandsModule.displayUsageMessage(blueprints[0]);
                 });
                 break;

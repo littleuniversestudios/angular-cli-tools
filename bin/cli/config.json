@@ -2,6 +2,9 @@
     "commands": {
         "save": {
             "rootDirectory": "./templates/saved"
+        },
+        "generate": {
+            "createBarrels": true
         }
     },
     "templateMap": {

@@ -72,6 +72,12 @@ var userConfigModule = {
         projectRootPath = projectRootPath || tools.getProjectRootFolder();
         var userConfig = userConfigModule.getUserConfig(projectRootPath);
         return tools.objectHasNestedProperty(userConfig, nestedProperty);
+    },
+
+    getProperty : function (nestedProperty, projectRootPath) {
+        projectRootPath = projectRootPath || tools.getProjectRootFolder();
+        var userConfig = userConfigModule.getUserConfig(projectRootPath);
+        return tools.objectGetNestedProperty(userConfig, nestedProperty);
     }
 
     // TODO: add a function that checks (and gets) a deeply nested property in an object

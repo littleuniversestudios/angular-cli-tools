@@ -39,6 +39,7 @@ var tools = {
     containsString : helpers.containsString,
 
     objectHasNestedProperty : helpers.objectHasNestedProperty,
+    objectGetNestedProperty : helpers.objectGetNestedProperty,
 
     fileExists : function (path) {
         return fs.existsSync(path);
