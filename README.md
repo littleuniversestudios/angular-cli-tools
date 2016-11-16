@@ -1,4 +1,4 @@
-CLI commands for new OR existing Angular 2 projects.
+CLI commands for new or existing Angular 2 projects.
 
 ## Install
 
@@ -28,7 +28,14 @@ CLI commands for new OR existing Angular 2 projects.
 
 ## Create a new project
 
-New projects created with Angular CLI Tools use a webpack seed from: [https://github.com/preboot/angular2-webpack](https://github.com/preboot/angular2-webpack)
+New projects created with Angular CLI Tools use open-source webpack seeds:
+
+| Seed        | Location|
+|:------------- |:-------------|
+| Basic      | [https://github.com/littleuniversestudios/ng2-basic-seed](https://github.com/littleuniversestudios/ng2-basic-seed)|
+| Bootstrap      | [https://github.com/littleuniversestudios/ng2-bootstrap-seed](https://github.com/littleuniversestudios/ng2-bootstrap-seed)|
+| Material Design      | [https://github.com/littleuniversestudios/ng2-material-seed](https://github.com/littleuniversestudios/ng2-material-seed)|
+
 
 ### Basic Project
 To create a basic (vanilla) Angular 2 project:
@@ -59,10 +66,11 @@ ngt new PROJECT-NAME --url:https://github.com/mgechev/angular2-seed
 
 ## Use with existing project
 
-Angular CLI Tools does not lock you into a specific tooling process. You can choose your own tooling process [(or use a pre-generated seed)](#create-a-new-project) and Angular CLI Tools will help you speed up your ng2 development. Here's how:
+Angular CLI Tools does not lock you into a specific tooling process. You can choose your own tooling process/seed and Angular CLI Tools will help you speed up your ng2 development. Here's how:
 
-* [Just install Angular CLI TOOLS](#install)
+* [Install Angular CLI TOOLS](#install)
 * [Start generating components ](#generating-components)
+* Bonus: run `ngt install` anywhere in the existing project to create [editable component templates](#edit-blueprint-templates) 
 
 
 ## Generating Components
@@ -95,8 +103,8 @@ ngt g c layout/header/new-component
 | directive      | `ngt g d [directive-name]`| yes |
 | enum      | `ngt g e [enum-name]`| yes |
 | html      | `ngt g h [name]`| yes |
-| index      | `ngt g i `| yes |
-| interface      | `ngt g int [interface-name]`| yes |
+| index      | `ngt g index `| yes |
+| interface      | `ngt g i [interface-name]`| yes |
 | module      | `ngt g m [module-name]`| yes |
 | pipe      | `ngt g p [pipe-name]`| yes |
 | [route](#route-blueprint)      | `ngt g r [route-name]`| no |
@@ -339,10 +347,10 @@ This will install the `angular-cli-tools\templates` folder at the root of your p
 | `ngt generate component [NAME] -css` |` ngt g c [NAME] -c`| With a .css style file|
 | `ngt generate directive [NAME]`      | `ngt g d [NAME]`| [NAME] optional |
 | `ngt generate enum`     | `ngt g e [NAME]`| [NAME] optional |
-| `ngt generate index`     | `ngt g i `| Generate a barrel (index.ts file)|
-| `ngt update index`     | `ngt u i `| Update a barrel (index.ts file)|
-| `ngt update index --recursive`     | `ngt u i -r`| Update a barrel in current folder and all sub folders|
-| `ngt generate interface [NAME]`     | `ngt g int [NAME] `| [NAME] optional |
+| `ngt generate index`     | `ngt g index `| Generate a barrel (index.ts file)|
+| `ngt update index`     | `ngt u index `| Update a barrel (index.ts file)|
+| `ngt update index --recursive`     | `ngt u iindex -r`| Update a barrel in current folder and all sub folders|
+| `ngt generate interface [NAME]`     | `ngt g i [NAME] `| [NAME] optional |
 | `ngt generate module [NAME]`      | `ngt g m [NAME]`| [NAME] optional |
 | `ngt generate pipe [NAME]`      | `ngt g p [NAME]`| [NAME] optional |
 | `ngt generate route [NAME]`      | `ngt g r [NAME]`| [NAME] optional |
@@ -353,6 +361,7 @@ Note: `[NAME] optional` means that if the NAME parameter is not provided, [Angul
 
 
 ## Changelog
+* v1.6.0 - [project seeds pulled from github repositories](#create-a-new-project) 
 * v1.5.0 - added "create barrels" option to config file (user can opt out of creating/updating index.ts files when generating components)
 * v1.4.2 - updated project seeds to follow style guide structure, install config.json with new projects (bug)
 * v1.4.1 - updated project seeds to: webpack 2, angular 2.1, router 3.1, angular2-router-loader

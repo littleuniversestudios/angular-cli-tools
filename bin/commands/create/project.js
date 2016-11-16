@@ -4,19 +4,7 @@ var ncp = require('ncp').ncp;
 var mkdirp = require('mkdirp');
 const download = require('download-github-repo'); //experimental
 
-
 var projectModule = {
-    create : function (seedType, targetInstallDirectory) {
-        //where the project will be generated
-        targetInstallDirectory = targetInstallDirectory || './';
-
-        //default to basic seed
-        seedType = seedType || 'basic';
-
-        projectModule.makeProjectDirectory(targetInstallDirectory, function () {
-            projectModule.makeProject(seedType, targetInstallDirectory);
-        });
-    },
 
     makeProjectDirectory : function (targetInstallDirectory, callback) {
         if (!tools.fileExists(targetInstallDirectory)) {
@@ -29,15 +17,14 @@ var projectModule = {
         }
     },
 
-    //experimental
-    createFromURL : function (url, targetInstallDirectory) {
+    createFromURL     : function (url, targetInstallDirectory, forceCreate, messageToUser) {
 
         url = projectModule.sanitizeGitHubURL(url);
 
         projectModule.makeProjectDirectory(targetInstallDirectory, function () {
 
             // only create new project in empty directory as to not overwrite something else in the folder
-            projectModule.checkIfInstallationDirectoryIsEmpty(targetInstallDirectory);
+            projectModule.checkIfInstallationDirectoryIsEmpty(targetInstallDirectory, forceCreate);
 
             mkdirp(targetInstallDirectory, function (err) {
                 if (err) throw err;
@@ -51,15 +38,14 @@ var projectModule = {
                     var port = projectModule.findLocalhostPort(targetInstallDirectory + 'README.md');
 
                     projectModule.copyCLIToolsToProject(targetInstallDirectory, function () {
-                        //add angular-cli-tools folder to .gitignore file
-                        projectModule.appendGitIgnoreFile('basic', targetInstallDirectory);
-                        projectModule.displaySuccessMessage('From GITHUB', targetInstallDirectory, port);
+                        projectModule.displaySuccessMessage(messageToUser, targetInstallDirectory, port);
                     });
 
                 });
             })
         });
     },
+
     findLocalhostPort : function (fileLocation) {
         var file = tools.readFile(fileLocation);
         var searchTerm = 'localhost:';
@@ -88,10 +74,10 @@ var projectModule = {
         return url;
     },
 
-    checkIfInstallationDirectoryIsEmpty : function (targetInstallDirectory) {
+    checkIfInstallationDirectoryIsEmpty : function (targetInstallDirectory, forceCreate) {
         // only create new project in empty directory as to not overwrite something else in the folder
-        if (tools.readdirSync(targetInstallDirectory).length != 0) {
-            tools.throwError('Installation directory: \'' + targetInstallDirectory + '\' must be empty. [Don\'t want to overwrite something important]');
+        if (tools.readdirSync(targetInstallDirectory).length != 0 && !forceCreate) {
+            tools.throwError('Installation directory: \'' + targetInstallDirectory + '\' must be empty. Use \'-f\' to to ignore this warning.');
         }
     },
 
@@ -105,67 +91,18 @@ var projectModule = {
 
             //then copy templates + config.json to '[project-root]/angular-cli-tools'
             var templatesDirectory = cliConfig.appRoot + cliConfig.cli.root;
-            ncp(templatesDirectory, localTemplatesDirectory, function (err) {
+            ncp(templatesDirectory, localTemplatesDirectory, {clobber : true}, function (err) {
                 if (err) throw err;
-
                 callback();
-
             });
+
+            //then create a .gitignore file for angualr-cli-tools folder (folder and its contents shouldn't be picket up by git)
+            tools.writeFile(localTemplatesDirectory + '.gitignore', '# do not add angular-cli-tools folder to repository \r\n*');
+
         });
     },
 
-    appendGitIgnoreFile : function (seedType, targetInstallDirectory) {
-        // add angular-cli-tools to .gitignore file
-        var gitIgnoreFileLocation = targetInstallDirectory + '.gitignore';
-        tools.appendFile(gitIgnoreFileLocation, projectModule.getGitIgnoreFileAdditions(seedType));
-    },
-
-    makeProject : function (seedType, targetInstallDirectory) {
-
-        // only create new project in empty directory as to not overwrite something else in the folder
-        projectModule.checkIfInstallationDirectoryIsEmpty(targetInstallDirectory);
-
-
-        // get the location of the seed project
-        var seedDirectory = cliConfig.appRoot + cliConfig.seeds.root + cliConfig.seeds.basic.root;
-
-        // copy the seed project
-        ncp(seedDirectory, targetInstallDirectory, function (err) {
-
-            if (err) throw err;
-
-            // copy the angular-cli-tools templates so user can edit/customize templates locally
-            projectModule.copyCLIToolsToProject(targetInstallDirectory, function () {
-
-                //add angular-cli-tools folder to .gitignore file //TODO: clean this up.... maybe have a default object in cliConfig because url seeds are neither basic/boot/material
-                projectModule.appendGitIgnoreFile(seedType, targetInstallDirectory);
-
-                // add seed dependencies and devDependencies in package.json
-                var packageFileLocation = targetInstallDirectory + 'package.json';
-                var packageFile = JSON.parse(tools.readFile(packageFileLocation));
-
-                packageFile = projectModule.addDependencies(packageFile, 'basic'); //always add basic seed dev/dependencies
-                packageFile = projectModule.addDependencies(packageFile, seedType); //add other seed dev/dependencies on top of basic seed dev/dependencies
-
-
-                tools.writeFile(packageFileLocation, JSON.stringify(packageFile, null, 4), function () {
-
-                    // if any other seed than the 'basic' seed, overwrite 'src' directory using selected seed's src (bootstrap|material)
-                    if (seedType != 'basic') {
-                        ncp(cliConfig.appRoot + cliConfig.seeds.root + cliConfig.seeds[seedType].srcFolder, targetInstallDirectory + '/src', {clobber : true}, function (err) {
-                            if (err) throw err;
-                            projectModule.displaySuccessMessage(seedType, targetInstallDirectory, '8080');
-                        });
-                    } else {
-                        projectModule.displaySuccessMessage(seedType, targetInstallDirectory, '8080');
-                    }
-                });
-            });
-        });
-    },
-
-
-    displaySuccessMessage : function (seedType, targetInstallDirectory, port) {
+    displaySuccessMessage   : function (seedType, targetInstallDirectory, port) {
         //done, notify user to 'npm start' to run angular 2 app
         if (!projectModule.successMessageDisplayed) {
             var logMessage = '';
@@ -201,43 +138,7 @@ var projectModule = {
             projectModule.successMessageDisplayed = true;
         }
     },
-    successMessageDisplayed : false,
-
-    getGitIgnoreFileAdditions : function (seedType) {
-        seedType = seedType || 'basic';
-        var gitIgnoreAddition = '\n';
-        var basicGitIgnoreAdditions = cliConfig.seeds['basic'].gitignore || [];
-        var seedGitIgnoreAdditions = cliConfig.seeds[seedType].gitignore || [];
-
-        basicGitIgnoreAdditions.forEach(function (addition) {
-            gitIgnoreAddition += addition + '\n';
-        });
-
-        if (seedType != 'basic') {
-            seedGitIgnoreAdditions.forEach(function (addition) {
-                gitIgnoreAddition += addition + '\n';
-            });
-        }
-        return gitIgnoreAddition;
-    },
-
-    addDependencies : function (packageFile, seedType) {
-        var listOfDependencies = cliConfig.seeds[seedType].dependencies || {};
-        var listOfDevDependencies = cliConfig.seeds[seedType].devDependencies || {};
-
-        for (var dependencyName in listOfDependencies) {
-            if (listOfDependencies.hasOwnProperty(dependencyName)) {
-                packageFile.dependencies[dependencyName] = listOfDependencies[dependencyName];
-            }
-        }
-
-        for (var devDependencyName in listOfDevDependencies) {
-            if (listOfDevDependencies.hasOwnProperty(devDependencyName)) {
-                packageFile.devDependencies[devDependencyName] = listOfDevDependencies[devDependencyName];
-            }
-        }
-        return packageFile;
-    }
+    successMessageDisplayed : false
 };
 
 module.exports = projectModule;

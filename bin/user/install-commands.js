@@ -4,10 +4,10 @@ var helpCommands = require('../commands/help/help');
 var installModule = require('../commands/install/install');
 
 var installCommands = {
-    install : function (fileType, vFlags) {
+    install : function (command, vFlags) {
         vFlags = vFlags || [];
-
-        switch (fileType) {
+        switch (command) {
+            case undefined:
             case 'templates':
                 installModule.createRootFolder(function () {
                     installModule.localTemplates(vFlags);
@@ -19,8 +19,9 @@ var installCommands = {
                     installModule.localConfig(vFlags);
                 });
                 break;
+
             default:
-                tools.logError('Install command: ' + fileType + ' not found. See help file for usage:');
+                tools.logError('Install command: ' + command + ' not found. See help file for usage:');
                 process.stdout.write(helpCommands.default());
                 break;
         }

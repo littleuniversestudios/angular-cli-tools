@@ -92,38 +92,14 @@ var config = {
         }
     },
     seeds : {
-        root : '/seeds',
         basic : {
-            root : '/basic',
-            dependencies : {},
-            devDependencies : {
-                "angular2-router-loader" : ""
-            },
-            gitignore : [
-                '# Angular-cli-Tools #',
-                'angular-cli-tools'
-            ]
+            url:'https://github.com/littleuniversestudios/ng2-basic-seed'
         },
         material : {
-            srcFolder : '/material/src',
-            devDependencies : {},
-            dependencies : {
-                "@angular2-material/core" : "^2.0.0-alpha.8-2",
-                "@angular2-material/button" : "^2.0.0-alpha.8-2",
-                "@angular2-material/card" : "^2.0.0-alpha.8-2"
-            },
-            gitignore : []
+            url:'https://github.com/littleuniversestudios/ng2-material-seed'
         },
         bootstrap : {
-            srcFolder : '/bootstrap/src',
-            devDependencies : {},
-            dependencies : {
-                "font-awesome" : "^4.6.3",
-                "moment" : "^2.15.0",
-                "ng2-bootstrap" : "^1.1.5",
-                "bootstrap" : "^4.0.0-alpha.4"
-            },
-            gitignore : []
+            url:'https://github.com/littleuniversestudios/ng2-bootstrap-seed'
         }
     },
     command : {
@@ -146,8 +122,8 @@ var config = {
                 'cl' : 'class',
                 'd' : 'directive',
                 'h' : 'html',
-                'i' : 'index',
-                'int' : 'interface',
+                'i' : 'interface',
+                'index' : 'index',
                 'e' : 'enum',
                 'm' : 'module',
                 'p' : 'pipe',
