@@ -5,9 +5,8 @@ var ncp = require('ncp').ncp;
 var mkdirp = require('mkdirp');
 var merge = require('merge');
 
-
 var installModule = {
-    localTemplates : function (vFlags) {
+    localTemplates : function (vFlags, callback) {
 
         //find the project's root folder
         var projectRootPath = tools.getProjectRootFolder();
@@ -17,7 +16,7 @@ var installModule = {
             //check if local templates already exist
             if (tools.fileExists(localTemplatesDirectory)) {
                 if (tools.isvFlagPresent(vFlags, '--force')) {
-                    installModule.copyLocalTemplates(localTemplatesDirectory);
+                    installModule.copyLocalTemplates(localTemplatesDirectory, 'update', callback);
                 } else {
                     tools.throwError(
                         'Local templates already exist in directory: ' + tools.logColorYellow(localTemplatesDirectory) +
@@ -31,13 +30,13 @@ var installModule = {
                 }
 
             } else {
-                installModule.copyLocalTemplates(localTemplatesDirectory);
+                installModule.copyLocalTemplates(localTemplatesDirectory, 'install', callback);
             }
         } else {
             tools.throwError('Could not find project\'s node_modules folder. Make sure the node_modules folder is present at the root of your project where local templates will be installed.');
         }
     },
-    copyLocalTemplates : function (localTemplatesDirectory, callback) {
+    copyLocalTemplates : function (localTemplatesDirectory, updateOrInstall, callback) {
         callback = callback || tools.emptyFunction();
 
         //first make the './angular-cli-tools/templates' directory
@@ -48,15 +47,21 @@ var installModule = {
             var templatesDirectory = cliConfig.appRoot + cliConfig.templates.root;
             ncp(templatesDirectory, localTemplatesDirectory, {clobber : true}, function (err) {
                 if (err) throw err;
-                tools.log(
-                    tools.logColorYellow('Local (editable) templates installed in: '),
-                    tools.logColorCyan(localTemplatesDirectory)
-                );
-                callback();
+                if (!installModule.installMessageDisplayed) {
+                    //display message only once
+                    installModule.installMessageDisplayed = true;
+                    if (updateOrInstall == 'update') {
+                        tools.log(tools.logColorYellow('Local (editable) templates were updated.'));
+                    } else {
+                        tools.log(tools.logColorYellow('Local (editable) templates were installed in: '), tools.logColorCyan(localTemplatesDirectory));
+                    }
+                    //run callback only once (ncp runs callback on every folder creation, not necessary for us so this is quick way of only running the update logger once)
+                    callback();
+                }
             })
         })
     },
-
+    installMessageDisplayed : false,
     createRootFolder : function (callback) {
         callback = callback || tools.emptyFunction();
 
@@ -108,7 +113,7 @@ var installModule = {
             );
             callback();
         })
-    },
+    }
 };
 module.exports = installModule;
 

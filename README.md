@@ -9,6 +9,7 @@ CLI commands for new or existing Angular 2 projects.
 #### Basics
 * [Create a new project: ](#create-a-new-project) [basic](#basic-project) | [bootstrap](#bootstrap-project) | [angular material](#angular-material-project) | [from GitHub](#from-github)
 * [Use Angular CLI Tools with an existing project](#use-with-existing-project)
+* [Updating Angular CLI Tools](#updating-angular-cli-tools)
 * [Generate Components, Modules, Services, Pipes ...](#generating-components)
 * [All Blueprints / Scaffolds](#all-available-blueprints)
 
@@ -68,9 +69,35 @@ ngt new PROJECT-NAME --url:https://github.com/mgechev/angular2-seed
 
 Angular CLI Tools does not lock you into a specific tooling process. You can choose your own tooling process/seed and Angular CLI Tools will help you speed up your ng2 development. Here's how:
 
-* [Install Angular CLI TOOLS](#install)
-* [Start generating components ](#generating-components)
-* Bonus: run `ngt install` anywhere in the existing project to create [editable component templates](#edit-blueprint-templates) 
+Install angular-cli-tools globally:
+```bash
+npm install angular-cli-tools -g
+```
+Change directory (cd) to the root of your existing ng2 project to install [editable templates](#edit-blueprint-templates): 
+
+```bash
+ngt install
+```
+
+***Note: none of your project files will be affected, only local (editable) templates are added in a separate folder along with an angular-cli-tools configuration file.  
+
+
+Then: [Start generating components ](#generating-components)
+
+
+## Updating Angular CLI Tools
+When a new version of Angular CLI Tools is published, run the following: 
+
+```bash
+npm install angular-cli-tools -g
+```
+Change directory (cd) to the root of your existing Angular 2 project and run
+
+```bash
+ngt update
+```
+
+The update will ensure that you have the latest config options and latest custom components that ship out-of-the-box with angular-cli-tools. Your saved components and current config changes you may have made previously will not be affected.  
 
 
 ## Generating Components
@@ -361,6 +388,7 @@ Note: `[NAME] optional` means that if the NAME parameter is not provided, [Angul
 
 
 ## Changelog
+* v1.7.0 - [added `ngt update` command](#updating-angular-cli-tools), added a form template: `ngt g c -t:reactive-form` 
 * v1.6.0 - [project seeds pulled from github repositories](#create-a-new-project) 
 * v1.5.0 - added "create barrels" option to config file (user can opt out of creating/updating index.ts files when generating components)
 * v1.4.2 - updated project seeds to follow style guide structure, install config.json with new projects (bug)

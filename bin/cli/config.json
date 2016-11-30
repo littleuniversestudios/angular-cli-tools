@@ -18,6 +18,12 @@
             "style": "./templates/custom/component-with-module/component.scss",
             "component": "./templates/custom/component-with-module/component.ts",
             "module": "./templates/custom/component-with-module/module.ts"
+        },
+        "reactive-form": {
+            "html": "./templates/custom/reactive-form/component.html",
+            "style": "./templates/custom/reactive-form/component.scss",
+            "component": "./templates/custom/reactive-form/component.ts",
+            "module": "./templates/custom/reactive-form/module.ts"
         }
     }
 }

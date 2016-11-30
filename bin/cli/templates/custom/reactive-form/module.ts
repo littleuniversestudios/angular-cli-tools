@@ -1,18 +1,21 @@
 import { NgModule }      from '@angular/core';
 import { CommonModule }  from '@angular/common';
-import { routing } from './$name$.routing';
 import { $PascalCaseName$Component } from './$name$.component';
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 @NgModule({
     imports: [
         CommonModule,
-        routing
+        FormsModule,
+        ReactiveFormsModule
     ],
     providers: [],
     declarations: [
         $PascalCaseName$Component
     ],
-    exports: []
+    exports: [
+        $PascalCaseName$Component
+    ]
 })
 export class $PascalCaseName$Module {
 

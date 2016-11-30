@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 @Component({
     selector: '$name$',
     templateUrl: '$name$.component.html',

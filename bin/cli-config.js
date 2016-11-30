@@ -117,6 +117,11 @@ var config = {
                 't' : 'templates',
                 'c' : 'config'
             },
+            update : {
+                'i' : 'index',
+                't' : 'templates',
+                'c' : 'config'
+            },
             components : {
                 'c' : 'component',
                 'cl' : 'class',

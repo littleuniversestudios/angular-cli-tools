@@ -1,0 +1,12 @@
+<form [formGroup]="form" (submit)="submitForm($event)">
+
+    <label for="username">Username</label>
+    <input formControlName="username" id="username"/>
+    <div [hidden]="isValidInput(form.controls.username)">Username must be 5 or more characters long.</div>
+
+    <label for="email">Email</label>
+    <input formControlName="email" id="email"/>
+    <div [hidden]="isValidInput(form.controls.email)">Invalid email.</div>
+
+    <button type="submit" [disabled]="form.invalid">Submit</button>
+</form>
