@@ -105,17 +105,26 @@ var config = {
     command : {
         shorthand : {
             commands : {
-                'n' : 'new',
+                'b' : 'blueprints',
+                'c' : 'commands',
                 'g' : 'generate',
-                'i' : 'install',
                 'h' : 'help',
-                'u' : 'update',
+                'i' : 'install',
+                'l' : 'list',
+                'n' : 'new',
                 's' : 'save',
+                't' : 'templates',
+                'u' : 'update',
                 'v' : 'version'
             },
             install : {
                 't' : 'templates',
                 'c' : 'config'
+            },
+            list : {
+                't' : 'templates',
+                'b' : 'blueprints',
+                'c' : 'commands'
             },
             update : {
                 'i' : 'index',

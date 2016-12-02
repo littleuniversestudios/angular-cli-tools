@@ -12,6 +12,7 @@ CLI commands for new or existing Angular 2 projects.
 * [Updating Angular CLI Tools](#updating-angular-cli-tools)
 * [Generate Components, Modules, Services, Pipes ...](#generating-components)
 * [All Blueprints / Scaffolds](#all-available-blueprints)
+* [Help in the CLI](#help-in-the-cli)
 
 #### Advanced Usage
 * [Edit templates](#edit-blueprint-templates)
@@ -98,6 +99,14 @@ ngt update
 ```
 
 The update will ensure that you have the latest config options and latest custom components that ship out-of-the-box with angular-cli-tools. Your saved components and current config changes you may have made previously will not be affected.  
+
+## Help in the CLI
+
+If you ever need help in the CLI:
+  
+```bash
+ngt help
+``` 
 
 
 ## Generating Components
@@ -388,6 +397,7 @@ Note: `[NAME] optional` means that if the NAME parameter is not provided, [Angul
 
 
 ## Changelog
+* v1.8.0 - added `ngt help` - [much needed CLI help](#help-in-the-cli) 
 * v1.7.0 - [added `ngt update` command](#updating-angular-cli-tools), added a form template: `ngt g c -t:reactive-form` 
 * v1.6.0 - [project seeds pulled from github repositories](#create-a-new-project) 
 * v1.5.0 - added "create barrels" option to config file (user can opt out of creating/updating index.ts files when generating components)

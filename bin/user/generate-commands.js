@@ -7,7 +7,7 @@ var indexBlueprint = require('../commands/generate/index');
 var generalBlueprint = require('../commands/generate/blueprint');
 var blueprintMetadataModule = require('../commands/generate/blueprint-metadata');
 var userConfigModule = require('./user-config');
-
+var listModule = require('../commands/list/list');
 
 var generateCommandsModule = {
     generateBlueprint : function (blueprintType, blueprintName, vFlags) {
@@ -16,7 +16,7 @@ var generateCommandsModule = {
         switch (blueprintType) {
             case 'index':
                 blueprintName = tools.pathEndsWithSlash(blueprintName) ? blueprintName : blueprintName + '/';
-                var indexData = blueprintMetadataModule.extractNameData(blueprintName,'index');
+                var indexData = blueprintMetadataModule.extractNameData(blueprintName, 'index');
                 indexBlueprint.generateCommand(indexData.destinationDirectory);
                 tools.logSuccess('Created ' + indexData.destinationDirectory + 'index.ts');
                 break;
@@ -36,22 +36,37 @@ var generateCommandsModule = {
             case 'routing':
             case 'service':
             case 'style':
-                blueprintMetadataModule.logUserTemplateUsed(vFlags);
-                var projectRootPath = tools.getProjectRootFolder();
-                var blueprints = blueprintMetadataModule.getBlueprints(blueprintType, blueprintName, vFlags, projectRootPath);
-                generalBlueprint.generateFilesFromBlueprints(blueprints, function () {
-                    //use the first blueprint's destination directory to create the barrel
-                    var createBarrels = userConfigModule.getProperty('commands.generate.createBarrels', projectRootPath);
-                    if (createBarrels === true || createBarrels === undefined) {
-                        indexBlueprint.updateCommand(blueprints[0].destinationDirectory);
-                    }
-                    generateCommandsModule.displayUsageMessage(blueprints[0]);
-                });
+                generateCommandsModule.generateComponent(blueprintType, blueprintName, vFlags);
+                break;
+            case undefined:
+                listModule.listBlueprints();
                 break;
             default:
-                tools.logError('Blueprint for scaffold: \'' + blueprintType + '\' does not exist. Run: \'ngt -h\' for list of commands');
+                //user can omit the component type so long as there is a template '-t' and a name present. In this case the blueprint type will default to 'component'
+                if (tools.isvFlagPresent(vFlags, '--template')) {
+                    // because the component/blueprint type is not present, blueprintName becomes blueprintType, and blueprintType defaults to 'component'
+                    blueprintName = blueprintType;
+                    blueprintType = 'component';
+                    generateCommandsModule.generateComponent(blueprintType, blueprintName, vFlags);
+                } else {
+                    tools.logError('Missing blueprint type: component, module, service, pipe...');
+                    listModule.listBlueprints();
+                }
                 break;
         }
+    },
+    generateComponent : function (blueprintType, blueprintName, vFlags) {
+        blueprintMetadataModule.logUserTemplateUsed(vFlags);
+        var projectRootPath = tools.getProjectRootFolder();
+        var blueprints = blueprintMetadataModule.getBlueprints(blueprintType, blueprintName, vFlags, projectRootPath);
+        generalBlueprint.generateFilesFromBlueprints(blueprints, function () {
+            //use the first blueprint's destination directory to create the barrel
+            var createBarrels = userConfigModule.getProperty('commands.generate.createBarrels', projectRootPath);
+            if (createBarrels === true || createBarrels === undefined) {
+                indexBlueprint.updateCommand(blueprints[0].destinationDirectory);
+            }
+            generateCommandsModule.displayUsageMessage(blueprints[0]);
+        });
     },
     displayUsageMessage : function (blueprint) {
         switch (blueprint.type) {
