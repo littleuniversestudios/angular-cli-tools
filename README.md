@@ -397,6 +397,7 @@ Note: `[NAME] optional` means that if the NAME parameter is not provided, [Angul
 
 
 ## Changelog
+* v1.8.1 - routing file explicitly exports/uses route name as a const (for lazy-loaded routes)  
 * v1.8.0 - added `ngt help` - [much needed CLI help](#help-in-the-cli) 
 * v1.7.0 - [added `ngt update` command](#updating-angular-cli-tools), added a form template: `ngt g c -t:reactive-form` 
 * v1.6.0 - [project seeds pulled from github repositories](#create-a-new-project) 

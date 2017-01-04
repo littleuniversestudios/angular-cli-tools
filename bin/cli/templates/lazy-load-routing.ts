@@ -6,4 +6,4 @@ const routes: Routes = [
     { path: '', component: $PascalCaseName$Component },
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(routes);
+export const $PascalCaseName$Routing: ModuleWithProviders = RouterModule.forChild(routes);
