@@ -30,14 +30,13 @@ var blueprintMetadataModule = {
 
     getBlueprintFiles : function (blueprintType, nameMetadata, vFlags, projectRootPath) {
 
+        projectRootPath = projectRootPath || tools.getProjectRootFolder();
         var userTemplate = tools.getvFlagPayload(tools.getvFlag(vFlags, '--template'));
         var cliConfigBlueprintFiles = cliConfig.templates.map[blueprintType];
         var cliConfigGeneratedFileNames = cliConfig.templates.names;
-        var projectRootPath = projectRootPath || tools.getProjectRootFolder();
         var userBlueprintFiles = userConfigModule.getUserTemplateFilesMap(userTemplate, projectRootPath);
         var styleType = blueprintMetadataModule.determineStyleType(vFlags);
         var blueprintFiles = [];
-
 
         //default to angular-cli-tools list of files for a specific component
         var blueprintFileList = cliConfigBlueprintFiles;
@@ -50,67 +49,82 @@ var blueprintMetadataModule = {
 
         // override the CLI blueprint files with files specified by user
         for (var blueprintFileType in blueprintFileList) {
-            var fileMetadata = null;
 
-            //1. Try getting the file from templateMap in user's config.json file
+            //ignore the description property if present as it is used for describing what the template does and serves no other purpose
+            if (blueprintFileType != 'description') {
 
-            if (userBlueprintFiles && userBlueprintFiles[blueprintFileType]) {
-                fileMetadata = userConfigModule.getAbsolutePathToUserBlueprintFile(userBlueprintFiles[blueprintFileType], projectRootPath);
+                var fileMetadata = null;
+
+                //1. Try getting the file from templateMap in user's config.json file
+
+                if (userBlueprintFiles && userBlueprintFiles[blueprintFileType]) {
+                    fileMetadata = userConfigModule.getAbsolutePathToUserBlueprintFile(userBlueprintFiles[blueprintFileType], projectRootPath);
+                }
+
+                //1b. Style file is different in that it can have a different extension (css|scss|less?) so we need to pull the right template
+                // if --css flag present default to component.css
+                // if --scss flag present default to component.scss
+                // if --less flag present default to component.less
+                var templateFileName = cliConfigBlueprintFiles[blueprintFileType];
+                if (blueprintFileType === 'style') {
+                    templateFileName = blueprintMetadataModule.determineStyleFile(templateFileName, styleType);
+                }
+
+                //2. Try getting the file from local user templates in [project-root]/angular-cli-tools/templates/[file-name]
+                if (!fileMetadata) {
+                    fileMetadata = blueprintMetadataModule.getAbsolutePathToLocalBlueprintFile(templateFileName, projectRootPath);
+                }
+
+                //3. Lastly, if above fails get the default file from angular-cli-tools/bin/cli/templates (global installation)
+                if (!fileMetadata) {
+                    fileMetadata = blueprintMetadataModule.getAbsolutePathToCliBlueprintFile(templateFileName);
+                }
+
+                //4 Prune files that are in the templateMap (config) but template file can't be found anywhere in the project
+                if (blueprintMetadataModule.isValidFile(fileMetadata)) {
+
+                    fileMetadata.type = blueprintType;
+                    fileMetadata.fileType = blueprintFileType;
+                    fileMetadata.fileName = nameMetadata.name + cliConfigGeneratedFileNames[blueprintFileType];
+                    fileMetadata.destinationDirectory = nameMetadata.destinationDirectory;
+
+                    //get replacements for template placeholders
+
+                    var templateData = tools.getTemplateReplacements(nameMetadata.name);
+                    fileMetadata.variables = templateData.templateVariables;
+                    fileMetadata.userDefinedValues = templateData.userDefinedValues;
+
+                    //store name formats for displaying usage info after generation
+                    fileMetadata.componentName = {
+                        original : nameMetadata.name,
+                        camelCase : tools.camelCase(nameMetadata.name),
+                        pascalCase : tools.pascalCase(nameMetadata.name)
+                    };
+
+                    // style file is a little bit different in that it could have different
+                    // file type ending .css / .scss so we check for it
+
+                    if (blueprintFileType === 'style') {
+                        fileMetadata.fileName += styleType;
+                    }
+
+                    //let component.ts file know which style file it is using
+                    if (blueprintFileType === 'component') {
+                        fileMetadata.variables.push('$styleFileType$');
+                        fileMetadata.userDefinedValues.push(styleType);
+                    }
+
+                    blueprintFiles.push(fileMetadata);
+                }
             }
 
-            //1b. Style file is different in that it can have a different extension (css|scss|less?) so we need to pull the right template
-            // if --css flag present default to component.css
-            // if --scss flag present default to component.scss
-            // if --less flag present default to component.less
-            var templateFileName = cliConfigBlueprintFiles[blueprintFileType];
-            if (blueprintFileType === 'style') {
-                templateFileName = blueprintMetadataModule.determineStyleFile(templateFileName, styleType);
-            }
-
-            //2. Try getting the file from local user templates in [project-root]/angular-cli-tools/templates/[file-name]
-            if (!fileMetadata) {
-                fileMetadata = blueprintMetadataModule.getAbsolutePathToLocalBlueprintFile(templateFileName, projectRootPath);
-            }
-
-            //3. Lastly, if above fails get the default file from angular-cli-tools/bin/cli/templates (global installation)
-            if (!fileMetadata) {
-                fileMetadata = blueprintMetadataModule.getAbsolutePathToCliBlueprintFile(templateFileName);
-            }
-
-            fileMetadata.type = blueprintType;
-            fileMetadata.fileType = blueprintFileType;
-            fileMetadata.fileName = nameMetadata.name + cliConfigGeneratedFileNames[blueprintFileType];
-            fileMetadata.destinationDirectory = nameMetadata.destinationDirectory;
-
-            //get replacements for template placeholders
-
-            var templateData = tools.getTemplateReplacements(nameMetadata.name);
-            fileMetadata.variables = templateData.templateVariables;
-            fileMetadata.userDefinedValues = templateData.userDefinedValues;
-
-            //store name formats for displaying usage info after generation
-            fileMetadata.componentName = {
-                original : nameMetadata.name,
-                camelCase : tools.camelCase(nameMetadata.name),
-                pascalCase : tools.pascalCase(nameMetadata.name)
-            };
-
-            // style file is a little bit different in that it could have different
-            // file type ending .css / .scss so we check for it
-
-            if (blueprintFileType === 'style') {
-                fileMetadata.fileName += styleType;
-            }
-
-            //let component.ts file know which style file it is using
-            if (blueprintFileType === 'component') {
-                fileMetadata.variables.push('$styleFileType$');
-                fileMetadata.userDefinedValues.push(styleType);
-            }
-
-            blueprintFiles.push(fileMetadata);
         }
         return blueprintFiles;
+    },
+    //the user can add files to a template but they may not physically exist so remove them from the metadata if they were not found
+    isValidFile : function (fileMetaData) {
+        var fileLocation = fileMetaData.location.split(tools.getOSDirCharacter());
+        return fileLocation[fileLocation.length - 1] != 'undefined';
     },
 
     determineStyleType : function (vFlags) {
@@ -168,7 +182,6 @@ var blueprintMetadataModule = {
     getAbsolutePathToLocalBlueprintFile : function (templateFileName, projectRootPath) {
         projectRootPath = projectRootPath || tools.getProjectRootFolder();
         var localTemplateLocation = path.resolve(projectRootPath, cliConfig.user.templates.location + templateFileName);
-
 
         var fileMetadata = {
             location : localTemplateLocation,

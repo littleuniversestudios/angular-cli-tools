@@ -3,13 +3,13 @@
 var tools = require('../api/tools');
 var cliConfig = require('../cli-config');
 var versionCommands = require('../commands/version/version');
-var helpCommands = require('../commands/help/help');
 var generateCommands = require('./generate-commands');
 var updateCommands = require('./update-commands');
 var createCommands = require('./create-commands');
 var installCommands = require('./install-commands');
 var saveCommandModule = require('./save-commands');
 var listCommandModule = require('./list-commands');
+var templatesModule = require('../commands/templates/templates');
 
 var mainCommands = {
     run : function (mainCommand, restOfCommands, vFlags) {
@@ -54,8 +54,12 @@ var mainCommands = {
                 break;
             case 'template':
             case 'templates':
-                //just a placeholder in case anyone types 'ngt template(s)' looking for the list of templates
-                listCommandModule.list('templates', vFlags);
+                if (!isNaN(parseInt(restOfCommands[0]))) {
+                    var templateName = templatesModule.getTemplateName(restOfCommands[0], restOfCommands[1]);
+                    mainCommands.run('generate', [restOfCommands[1]], ['--template:' + templateName])
+                } else {
+                    listCommandModule.list('templates', vFlags);
+                }
                 break;
             case 'update':
                 var updateSubCommand = cliConfig.command.shorthand.update[restOfCommands[0]] || restOfCommands[0];

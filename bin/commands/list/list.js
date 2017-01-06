@@ -90,15 +90,15 @@ var listModule = {
     listTemplates : function () {
 
         var table = new CLITable({
-            head : ['Template', 'Usage (shorthand)'],
+            head : ['Template', 'Usage (shorthand)', 'Quick Usage', 'Description'],
             chars : {'mid' : '', 'left-mid' : '', 'mid-mid' : '', 'right-mid' : ''}
         });
 
         var allTemplates = userConfigModule.getProperty('templateMap');
         var templateNames = Object.keys(allTemplates).sort();
 
-        templateNames.forEach(function (templateName) {
-            table.push([templateName, 'ngt g <name> -t:' + templateName]);
+        templateNames.forEach(function (templateName, index) {
+            table.push([templateName, 'ngt g <name> -t:' + templateName, 'ngt t ' + index + ' <name>', allTemplates[templateName].description || '']);
         });
 
         console.log(table.toString());
