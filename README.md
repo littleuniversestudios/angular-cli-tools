@@ -37,6 +37,7 @@ New projects created with Angular CLI Tools use open-source webpack seeds:
 | Basic      | [https://github.com/littleuniversestudios/ng2-basic-seed](https://github.com/littleuniversestudios/ng2-basic-seed)|
 | Bootstrap      | [https://github.com/littleuniversestudios/ng2-bootstrap-seed](https://github.com/littleuniversestudios/ng2-bootstrap-seed)|
 | Material Design      | [https://github.com/littleuniversestudios/ng2-material-seed](https://github.com/littleuniversestudios/ng2-material-seed)|
+| Firebase      | [https://github.com/littleuniversestudios/ng4-firebase-seed](https://github.com/littleuniversestudios/ng4-firebase-seed)|
 
 
 ### Basic Project
@@ -57,6 +58,13 @@ Likewise, an Angular Material seed can be created by:
 
 ```bash
 ngt new PROJECT-NAME --material
+```
+
+### Angular Firebase Project
+Likewise, an Angular Material seed can be created by:
+
+```bash
+ngt new PROJECT-NAME --firebase
 ```
 
 ### From GitHub

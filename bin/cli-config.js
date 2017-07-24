@@ -100,6 +100,9 @@ var config = {
         },
         bootstrap : {
             url:'https://github.com/littleuniversestudios/ng2-bootstrap-seed'
+        },
+        firebase: {
+            url: 'https://github.com/littleuniversestudios/ng4-firebase-seed'
         }
     },
     command : {
@@ -154,7 +157,8 @@ var config = {
                 '-f' : '--force',
                 '-r' : '--recursive',
                 '-u' : '--url',
-                '-t' : '--template'
+                '-t' : '--template',
+                '-fir' : '--firebase'
             },
             seeds : {}
         }

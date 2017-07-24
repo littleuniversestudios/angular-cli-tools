@@ -70,6 +70,7 @@ var listModule = {
             ['basic', 'ngt new <project-name>', 'ngt n <project-name>'],
             ['bootstrap', 'ngt new <project-name> --bootstrap', 'ngt n <project-name> -b'],
             ['material design', 'ngt new <project-name> --material', 'ngt n <project-name> -m'],
+            ['firebase', 'ngt new <project-name> --firebase', 'ngt n <project-name> -fir'],
             ['from gitHub', 'ngt new <project-name> --url:<github-url>', 'ngt n <project-name> -u:<gitHub-url>']
         );
 
