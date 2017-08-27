@@ -3,12 +3,13 @@ var tools = require('../../api/tools');
 var cliConfig = require('../../cli-config');
 var userConfigModule = require('../../user/user-config');
 var mkdirp = require('mkdirp');
+var merge = require('merge');
 
 var blueprintMetadataModule = {
     getBlueprints : function (blueprintType, blueprintName, vFlags, projectRootPath) {
 
         //1. Figure out the name and destination for the component to generate
-        var nameMetadata = blueprintMetadataModule.extractNameData(blueprintName, blueprintType);
+        var nameMetadata = blueprintMetadataModule.extractNameData(blueprintName, blueprintType, vFlags);
 
         //2. Get all files that are required fo this component + their metadata
         var blueprintTemplates = blueprintMetadataModule.getBlueprintFiles(blueprintType, nameMetadata, vFlags, projectRootPath);
@@ -32,9 +33,9 @@ var blueprintMetadataModule = {
 
         projectRootPath = projectRootPath || tools.getProjectRootFolder();
         var userTemplate = tools.getvFlagPayload(tools.getvFlag(vFlags, '--template'));
-        var cliConfigBlueprintFiles = cliConfig.templates.map[blueprintType];
-        var cliConfigGeneratedFileNames = cliConfig.templates.names;
         var userBlueprintFiles = userConfigModule.getUserTemplateFilesMap(userTemplate, projectRootPath);
+        var cliConfigGeneratedFileNames = merge({}, cliConfig.templates.names, userConfigModule.getProperty('fileNames.' + userTemplate, projectRootPath));
+        var cliConfigBlueprintFiles = cliConfig.templates.map[blueprintType];
         var styleType = blueprintMetadataModule.determineStyleType(vFlags);
         var blueprintFiles = [];
 
@@ -143,7 +144,9 @@ var blueprintMetadataModule = {
     /*
      * Name can be blank, regular name, or name with a relative path
      */
-    extractNameData : function (blueprintName, blueprintType) {
+    extractNameData : function (blueprintName, blueprintType, vFlags) {
+        var isFlat = tools.isvFlagPresent(vFlags, '--flat')
+
         var nameData = {};
         if (blueprintName == './' || blueprintName == '.' || blueprintName == undefined || blueprintName == '') {
             nameData.name = tools.getCurrentDirectoryName();
@@ -172,7 +175,7 @@ var blueprintMetadataModule = {
             nameData.destinationDirectory = pathParts.join('/') + '/';
         }
 
-        if (['component', 'route'].indexOf(blueprintType) >= 0) {
+        if (['component', 'route'].indexOf(blueprintType) >= 0 && !isFlat) {
             nameData.destinationDirectory += nameData.name + '/';
         }
 
