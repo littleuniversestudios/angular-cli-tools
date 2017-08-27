@@ -269,14 +269,13 @@ In the `angular-cli-tools` folder at the root of your project, there is a `confi
 The following in the `config.json` file will tell angular-cli-tools which blueprint templates to use when generating a card component:
 
  ```
- {
-    "templateMap": {
-         "card": {
-             "component": "./templates/custom/card/component.ts",
-             "html": "./templates/custom/card/component.html",
-             "style": "./templates/custom/card/component.scss"
-         },
-    }
+ 
+ "templateMap": {
+     "card": {
+         "component": "./templates/custom/card/component.ts",
+         "html": "./templates/custom/card/component.html",
+         "style": "./templates/custom/card/component.scss"
+     },
  }
  ```
 
@@ -288,9 +287,45 @@ Or the shorthand version that executes the same command:
 
 `ngt g c card -t:card`
 
+These will generate 
+
+```
+
+./card/card.component.ts
+./card/card.component.html
+./card/card.component.scss
+
+```
+
 The `--template:template-name` flag (or shorthand `-t:template-name`) tells angular-cli-tools which template to apply when generating a component. Feel free to add your own custom templates especially ones that will be (re)used often throughout your project.
 
 Angular CLI Tools comes with some custom components out of the box and can be found in the `angular-cli-tools/components/custom` folder found at the root of your project.
+
+#### Custom Template Types (v.1.9.2+)
+
+You can also use the `config.json` file to configure custom template types like so:
+
+```
+
+"fileNames": {
+    "card": {
+      "component": ".card.ts",
+      "html": ".card.html",
+      "style": ".card."
+    }
+  }
+
+```
+
+With this if you run `ngt g c fancyCard -t:card` it will create
+
+```
+
+./fancyCard/fancyCard.card.ts
+./fancyCard/fancyCard.card.html
+./fancyCard/fancyCard.card.scss
+
+```
 
 ## Save Templates (v1.4.0+)
 

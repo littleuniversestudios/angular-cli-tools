@@ -1,32 +1,44 @@
 {
-    "commands": {
-        "save": {
-            "rootDirectory": "./templates/saved"
-        },
-        "generate": {
-            "createBarrels": false
-        }
+  "commands": {
+    "save": {
+      "rootDirectory": "./templates/saved"
     },
-    "templateMap": {
-        "card": {
-            "component": "./templates/custom/card/component.ts",
-            "html": "./templates/custom/card/component.html",
-            "style": "./templates/custom/card/component.scss",
-            "description": "Component that generates a html card element"
-        },
-        "with-module": {
-            "html": "./templates/custom/component-with-module/component.html",
-            "style": "./templates/custom/component-with-module/component.scss",
-            "component": "./templates/custom/component-with-module/component.ts",
-            "module": "./templates/custom/component-with-module/module.ts",
-            "description": "Generates a component and module in one shot."
-        },
-        "reactive-form": {
-            "html": "./templates/custom/reactive-form/component.html",
-            "style": "./templates/custom/reactive-form/component.scss",
-            "component": "./templates/custom/reactive-form/component.ts",
-            "module": "./templates/custom/reactive-form/module.ts",
-            "description": "Generates a reactive form."
-        }
+    "generate": {
+      "createBarrels": false
     }
+  },
+  "templateMap": {
+    "card": {
+      "component": "./templates/custom/card/component.ts",
+      "html": "./templates/custom/card/component.html",
+      "style": "./templates/custom/card/component.scss",
+      "description": "Component that generates a html card element"
+    },
+    "with-module": {
+      "html": "./templates/custom/component-with-module/component.html",
+      "style": "./templates/custom/component-with-module/component.scss",
+      "component": "./templates/custom/component-with-module/component.ts",
+      "module": "./templates/custom/component-with-module/module.ts",
+      "description": "Generates a component and module in one shot."
+    },
+    "reactive-form": {
+      "html": "./templates/custom/reactive-form/component.html",
+      "style": "./templates/custom/reactive-form/component.scss",
+      "component": "./templates/custom/reactive-form/component.ts",
+      "module": "./templates/custom/reactive-form/module.ts",
+      "description": "Generates a reactive form."
+    },
+    "page": {
+      "component": "./templates/custom/page/page.ts",
+      "html": "./templates/custom/page/page.html",
+      "description": "Component that generates a report page"
+    }
+  },
+  "fileNames": {
+    "card": {
+      "component": ".card.ts",
+      "html": ".card.html",
+      "style": ".card."
+    }
+  }
 }
