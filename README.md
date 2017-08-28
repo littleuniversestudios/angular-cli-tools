@@ -440,6 +440,7 @@ Note: `[NAME] optional` means that if the NAME parameter is not provided, [Angul
 
 
 ## Changelog
+* v1.9.2 - [config](#custom-template-types-v192): added custom template types support 
 * v1.9.0 - templates: added quick usage + description. run `ngt t` for full info.  
 * v1.8.1 - routing file explicitly exports/uses route name as a const (for lazy-loaded routes)  
 * v1.8.0 - added `ngt help` - [much needed CLI help](#help-in-the-cli) 
