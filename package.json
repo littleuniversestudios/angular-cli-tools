@@ -1,6 +1,6 @@
 {
   "name": "angular-cli-tools",
-  "version": "1.9.2",
+  "version": "1.10.0",
   "description": "Command Line Interface tools for Angular 2 projects.",
   "main": "index.js",
   "bin": {
@@ -13,7 +13,8 @@
     "find-node-modules": "1.0.3",
     "merge": "^1.2.0",
     "mkdirp": "^0.5.1",
-    "ncp": "^2.0.0"
+    "ncp": "^2.0.0",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {},
   "repository": {

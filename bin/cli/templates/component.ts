@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 @Component({
-    selector: '$name$',
+    selector: '$selectorPrefix$$name$',
     templateUrl: '$name$.component.html',
     styleUrls: ['$name$.component.$styleFileType$'],
 })

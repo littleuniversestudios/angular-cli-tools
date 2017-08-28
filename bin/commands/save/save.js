@@ -117,7 +117,7 @@ var saveModule = {
         var projectRootPath = projectRootPath || tools.getProjectRootFolder();
         var absoluteTargetDirectory = userConfigModule.getAbsolutePathToSavedComponentsFolder(projectRootPath);
         var relativeTargetDirectory = tools.addSlashToPath(userConfigModule.getSavedComponentsTargetDirectory(projectRootPath));
-        var templateReplacements = tools.getTemplateReplacements(componentName);
+        var templateReplacements = tools.getTemplateReplacements(componentName, '$selectorPrefix$');
 
         var metaData = [];
         fileArray.forEach(function (fileName) {

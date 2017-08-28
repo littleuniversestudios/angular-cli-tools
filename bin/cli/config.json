@@ -40,5 +40,10 @@
       "html": ".card.html",
       "style": ".card."
     }
-  }
+  },
+  "globalSelectorPrefix" : {
+    "component" : null,
+    "directive" : null
+  },
+  "customVariables" : {}
 }

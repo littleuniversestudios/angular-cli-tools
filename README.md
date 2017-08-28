@@ -17,8 +17,11 @@ CLI commands for new or existing Angular 2 projects.
 #### Advanced Usage
 * [Edit templates](#edit-blueprint-templates)
 * [Custom templates](#custom-templates)
+	* [Custom types](#custom-template-types-v192)
+	* [Selector prefix's](#template-selector-prefixs-v110)
+	* [Custom Variables](#custom-variables-v110)
 * [Save templates](#save-templates-v140)
-* [Generate and Update barrels (index.ts files)](#update-index.ts-files) [ [recursively] ](#update-index.ts-files-recursively)
+* [Generate and Update barrels (index.ts files)](#update-indexts-files) [ [recursively] ](#update-indexts-files-recursively)
 
 #### Supporting documentation
 * [Shortcuts](#shortcuts)
@@ -90,6 +93,7 @@ ngt install
 
 ***Note: none of your project files will be affected, only local (editable) templates are added in a separate folder along with an angular-cli-tools configuration file.  
 
+By default, angular-cli-tools will create a `.gitignore` file inside the `angular-cli-tools` directory that disables git from picking up any templates or config files. To disable this, use the `--no-gitignore` flag when installing.
 
 Then: [Start generating components ](#generating-components)
 
@@ -137,6 +141,16 @@ ngt g c layout/header/new-component
 ```
 
 ... will be generated in `./layout/header/new-component` directory
+
+##### `--flat` Flag
+
+Using the flag `--flat` will create the scaffold in the directory supplied, inside of in its own directory, so running 
+
+```bash
+ngt g c layout/header/new-component --flat
+```
+
+... will generate a component in `./layout/header` directory instead
 
 ## All available blueprints:
 
@@ -229,13 +243,13 @@ NOTE: w/webpack you'll need to use a router loader such as [angular2-router-load
 If you don't have a the `angular-cli-tools` folder at the root of you project [install the local templates](#install-local-templates)
 
 In the `angular-cli-tools` folder at the root of your project, there is a `config.json` file that allows you to map and group template files to a template name:
-```
+```json
 {
    "templateMap": {
         "template-name": {
             "file-type": "./path-to-custom-template",
             "file-type": "./path-to-custom-template"
-        },
+        }
    }
 }
 ```
@@ -269,7 +283,6 @@ In the `angular-cli-tools` folder at the root of your project, there is a `confi
 The following in the `config.json` file will tell angular-cli-tools which blueprint templates to use when generating a card component:
 
  ```
- 
  "templateMap": {
      "card": {
          "component": "./templates/custom/card/component.ts",
@@ -290,11 +303,9 @@ Or the shorthand version that executes the same command:
 These will generate 
 
 ```
-
 ./card/card.component.ts
 ./card/card.component.html
 ./card/card.component.scss
-
 ```
 
 The `--template:template-name` flag (or shorthand `-t:template-name`) tells angular-cli-tools which template to apply when generating a component. Feel free to add your own custom templates especially ones that will be (re)used often throughout your project.
@@ -303,10 +314,17 @@ Angular CLI Tools comes with some custom components out of the box and can be fo
 
 #### Custom Template Types (v.1.9.2+)
 
-You can also use the `config.json` file to configure custom template types like so:
+By default, anything you generate will use the template type in the name, like if run `ngt g c fancyCard -t:card` you will get:
 
 ```
+./fancyCard/fancyCard.component.ts
+./fancyCard/fancyCard.component.html
+./fancyCard/fancyCard.component.scss
+```
 
+However, you can also use the `config.json` file to configure custom template types like so:
+
+```
 "fileNames": {
     "card": {
       "component": ".card.ts",
@@ -314,18 +332,101 @@ You can also use the `config.json` file to configure custom template types like 
       "style": ".card."
     }
   }
-
 ```
 
-With this if you run `ngt g c fancyCard -t:card` it will create
+Now if you run `ngt g c fancyCard -t:card` it will create
 
 ```
-
 ./fancyCard/fancyCard.card.ts
 ./fancyCard/fancyCard.card.html
 ./fancyCard/fancyCard.card.scss
+```
+
+#### Template Selector Prefix's (v.1.10+)
+
+If you want to add a prefix to the selector of a `component` or `directive`, there are 2 ways to do it.
+
+##### Option 1
+
+Use the `--prefix:prefix-name` (shorthand `-p:prefix-name`) flag when generating a component or directive:
+
+```bash
+ngt g c page --prefix:fancy
+```
+This give's **only** that component's selector the prefix `fancy`
+
+##### Option 2
+
+In the `config.json` file there is a property called `globalSelectorPrefix` that looks like:
 
 ```
+"globalSelectorPrefix" : {
+    "component" : null,
+    "directive" : null
+}
+```
+Changing either of the `null` values to strings will set that prefix on every generated file of that type. Do this:
+
+```
+"globalSelectorPrefix" : {
+    "component" : "fancy",
+    "directive" : null
+}
+```
+would give any generated component's selector a prefix of `fancy`
+
+Both methods do not change the file names, only the `selector` inside the `@Component` constructor of a the `component.ts` file.
+
+**Note:** Using the `--prefix` flag will override whatever is set in the `globalSelectorPrefix` section of your `config.json`
+
+#### Custom Variables (v.1.10)
+
+You can also define custom variables to use inside any templates you would like. Just like prefix', there are two ways you can accomplish this.
+
+##### Option 1: `config.json`
+
+You can use the config.json file to define a variable and its value, and then use that same variable in any template you like. Inside your `angular-cli-tools/config.json` file there is this:
+
+```
+"customVariables" : {
+}
+```
+
+You define variables by using the `#` character followed by the variable name as the key, and whatever you want as the value. To use it in a template, you surround the variable name by the `#` character. For example, to use a variable called `projectId`:
+
+In the `config.json` file:
+```
+"customVariables" : {
+    "#projectId" : "abc123"
+}
+```
+
+In `./angular-cli-tools/templates/component.ts` file (for example, can be any template file):
+
+```
+constructor() {
+    console.log('Running with project id #projectId#');
+}
+```
+
+Then when you run `ngt g c dashboard` in your `dashboard.component.ts` file you will see
+```
+constructor() {
+    console.log('Running with project id abc123');
+}
+```
+
+##### Option 2: Command Line Flag
+
+You can also define a variable value for a single generate command by passing a flag into the command line. You define the variable in the template the same way as above, but instead of setting the value in `config.json`, you do this:
+
+```
+ngt g c test --#projectId:"abc 123-456 **"
+```
+
+This will replace all occurances of `#projectId#` with `abc 123-456 **` in any of the templates it finds the key.
+
+**Note:** Using the command line flag will override whatever value is given in the `config.json` file.
 
 ## Save Templates (v1.4.0+)
 
@@ -434,13 +535,21 @@ This will install the `angular-cli-tools\templates` folder at the root of your p
 | `ngt generate pipe [NAME]`      | `ngt g p [NAME]`| [NAME] optional |
 | `ngt generate route [NAME]`      | `ngt g r [NAME]`| [NAME] optional |
 | `ngt generate service [NAME]`      | `ngt g s [NAME]`| [NAME] optional |
-| `ngt install templates`      | `ngt i t`| installs `angular-cli-tools\templates` folder|
+| `ngt install [--no-gitignore]`      | `ngt i [--no-gitignore]`| Installs `angular-cli-tools\templates` folder and `angular-cli-tools\config.json` file. `--no-gitignore` flag is optional|
+| `ngt install templates [--no-gitignore]`      | `ngt i t [--no-gitignore]`| Installs `angular-cli-tools\templates` folder. `--no-gitignore` flag is optional|
+| `ngt install config [--no-gitignore]`      | `ngt i c [--no-gitignore]`| Installs `angular-cli-tools\config.json` file. `--no-gitignore` flag is optional|
 
 Note: `[NAME] optional` means that if the NAME parameter is not provided, [Angular CLI Tools will use the folder name as the name of the component.](#optional-blueprint-names)
 
 
 ## Changelog
-* v1.9.2 - [config](#custom-template-types-v192): added custom template types support 
+* v1.10.0
+	*  [install](#use-with-existing-project): installing angular-cli-tools now adds a `.gitignore` file so templates do not get picked up by Git.
+	*  [selector prefix's](#template-selector-prefixs-v.1.10): added ability to set prefix of component and directive selectors
+	*  [custom variables](#custom-variables-v110): added custom variables to project with command line flag
+* v1.9.2
+	* [custom templates](#custom-template-types-v192): added custom template types support
+	* [generating components](#generating-components): `--flat` flag added
 * v1.9.0 - templates: added quick usage + description. run `ngt t` for full info.  
 * v1.8.1 - routing file explicitly exports/uses route name as a const (for lazy-loaded routes)  
 * v1.8.0 - added `ngt help` - [much needed CLI help](#help-in-the-cli) 
