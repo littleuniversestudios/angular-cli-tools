@@ -28,8 +28,8 @@ var updateCommands = {
                 });
                 break;
             case 'index':
-                var blueprintName = tools.pathEndsWithSlash(updateSubCommand) ? updateSubCommand : updateSubCommand + '/';
-                var indexData = blueprintMetadataModule.extractNameData(blueprintName);
+                // var blueprintName = tools.pathEndsWithSlash(updateSubCommand) ? updateSubCommand : updateSubCommand + '/';
+                var indexData = blueprintMetadataModule.extractNameData('index.ts');
                 if (tools.isvFlagPresent(vFlags, '--recursive')) {
                     var updatedFiles = indexBlueprint.updateRecursive(indexData.destinationDirectory, []);
                     tools.logSuccess('Updated: \n' + updatedFiles.map(function (path) {
