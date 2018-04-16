@@ -35,6 +35,7 @@ var generateCommandsModule = {
             case 'pipe':
             case 'routing':
             case 'service':
+            case 'spec':
             case 'style':
                 generateCommandsModule.generateComponent(blueprintType, blueprintName, vFlags);
                 break;
