@@ -35,6 +35,8 @@ var tools = {
 
 	camelCase : helpers.camelCase,
 
+	kebabCase : helpers.kebabCase,
+
 	pascalCase : helpers.pascalCase,
 
 	containsString : helpers.containsString,
@@ -107,8 +109,8 @@ var tools = {
 			(prefix[prefix.length - 1] === '-' ? prefix : prefix + '-')
 			: '';
 		return {
-			templateVariables : ['$name$', '$camelCaseName$', '$PascalCaseName$', '$selectorPrefix$'],
-			userDefinedValues : [name, tools.camelCase(name), tools.pascalCase(name), selectorPrefix]
+			templateVariables : ['$name$', '$camelCaseName$', '$kebabCaseName$', '$PascalCaseName$', '$selectorPrefix$'],
+			userDefinedValues : [name, tools.camelCase(name), tools.kebabCase(name), tools.pascalCase(name), selectorPrefix]
 		}
 	},
 
