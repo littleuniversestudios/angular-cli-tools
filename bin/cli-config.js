@@ -17,12 +17,14 @@ var config = {
 			'pipe' : '.pipe.ts',
 			'routing' : '.routing.ts',
 			'service' : '.service.ts',
+			'spec' : '.component.spec.ts',
 			'style' : '.component.'
 		},
 		map : {
 			component : {
 				component : 'component.ts',
 				html : 'component.html',
+				spec : 'component.spec.ts',
 				style : 'component.scss'
 			},
 			route : {
