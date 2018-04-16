@@ -64,6 +64,9 @@ var config = {
 			service : {
 				service : 'service.ts'
 			},
+			spec : {
+				spec : 'component.spec.ts'
+			},
 			html : {
 				html : 'component.html'
 			}
@@ -151,7 +154,8 @@ var config = {
 				'm' : 'module',
 				'p' : 'pipe',
 				'r' : 'route',
-				's' : 'service'
+				's' : 'service',
+				'spec' : 'spec'
 			},
 			flags : {
 				'-b' : '--bootstrap',
