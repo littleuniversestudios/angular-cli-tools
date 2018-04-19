@@ -23,6 +23,11 @@ var helpers = {
         var pascalCaseName = helpers.pascalCase(str);
         return pascalCaseName[0].toLowerCase() + pascalCaseName.slice(1);
     },
+    
+    kebabCase : function (str) {
+        var camelCaseName = helpers.camelCase(str);
+        return camelCaseName.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+    },
 
     pascalCase : function (str) {
         return str.split('-').map(function (word) {
