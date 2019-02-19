@@ -1,3 +1,5 @@
+Updating outdated libraries being used, and hopefully adding an option to config.json that will allow you to default to LESS instead of SCSS.
+
 CLI commands for new or existing Angular 2 projects.
 
 ## Install
