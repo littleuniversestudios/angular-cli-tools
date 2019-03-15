@@ -159,7 +159,8 @@ var blueprintMetadataModule = {
 	},
 
 	determineStyleType : function (vFlags) {
-		var styleType = 'scss'; //default
+	    // look inside the user config for a default style of less/css/scss
+		var styleType = userConfigModule.getUserConfig().defaultStyle || 'scss'; //default
 		styleType = tools.isvFlagPresent(vFlags, '--css') ? 'css' : styleType;
 		styleType = tools.isvFlagPresent(vFlags, '--less') ? 'less' : styleType;
 		return styleType;

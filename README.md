@@ -193,6 +193,7 @@ Same concept applies to all blueprints except the `Component` and `Route` bluepr
 | Options    | |
 |:------------- |:-------|
 | `--scss`     | generate component with .scss file [default] |
+| `--less`     | generate component with .les file |
 | `--css`      | generate component with .css file|
 
 
@@ -210,7 +211,7 @@ Angular CLI Tools generates a lazy loaded route that contains the following file
 
 * lazy-loaded-route.component.ts
 * lazy-loaded-route.component.html
-* lazy-loaded-route.component.scss|css
+* lazy-loaded-route.component.scss|css|less
 * lazy-loaded-route.module.ts
 * lazy-loaded-route.routing.ts
 
@@ -218,6 +219,7 @@ Angular CLI Tools generates a lazy loaded route that contains the following file
 | Options    | |
 |:------------- |:-------|
 | `--scss`     | generate route component with .scss file [default] |
+| `--less`     | generate route component with .less file |
 | `--css`      | generate route component with .css file|
 
 
@@ -225,6 +227,7 @@ Angular CLI Tools generates a lazy loaded route that contains the following file
 |:------------- |:-------|
 | `ngt generate route dashboard`     | generate a lazy loaded 'dashboard' route |
 | `ngt g r dashboard --scss`      | generate component with .scss file|
+| `ngt g r dashboard --less`      | generate component with .less file|
 | `ngt g r dashboard --css`      | generate component with .css file|
 
 To add a new lazy loaded route to your project:
@@ -378,6 +381,16 @@ would give any generated component's selector a prefix of `fancy`
 Both methods do not change the file names, only the `selector` inside the `@Component` constructor of a the `component.ts` file.
 
 **Note:** Using the `--prefix` flag will override whatever is set in the `globalSelectorPrefix` section of your `config.json`
+
+#### Default Style (v.1.10.3)
+
+You can add a defaultStyle option to your custom config.json, to avoid having to add --less or --css to each `generate` command.
+
+```
+{
+    "defaultStyle" : "less"
+}
+```
 
 #### Custom Variables (v.1.10)
 
